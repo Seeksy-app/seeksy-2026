@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { RoleProvider } from "@/contexts/RoleContext";
 import { GlobalDataModeProvider } from "@/contexts/GlobalDataModeContext";
 import { PortalProvider } from "@/contexts/PortalContext";
@@ -13,8 +14,6 @@ import { TourModeWrapper } from "@/components/layout/TourModeWrapper";
 import { NavCustomizationModal } from "@/components/dashboard/NavCustomizationModal";
 import { OnboardingProvider } from "@/components/onboarding/OnboardingProvider";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { User } from "@supabase/supabase-js";
 import { useTaskReminders } from "@/hooks/useTaskReminders";
 import { useAutoTheme } from "@/hooks/useAutoTheme";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
@@ -702,8 +701,8 @@ const queryClient = new QueryClient({
 // Holiday features completely removed
 
 const AppContent = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  // Use AuthContext - single source of truth for auth
+  const { user, isAdmin } = useAuth();
   const [navModalOpen, setNavModalOpen] = useState(false);
   const location = useLocation();
   
@@ -725,55 +724,6 @@ const AppContent = () => {
     window.addEventListener('openNavCustomization', handleOpenNavCustomization);
     return () => window.removeEventListener('openNavCustomization', handleOpenNavCustomization);
   }, []);
-
-  useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-      
-      // Defer admin check to avoid blocking
-      if (session?.user) {
-        setTimeout(() => {
-          checkAdminStatus(session.user.id);
-        }, 0);
-      } else {
-        setIsAdmin(false);
-      }
-    });
-
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        setTimeout(() => {
-          checkAdminStatus(session.user.id);
-        }, 0);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const checkAdminStatus = async (userId: string) => {
-    try {
-      const { data: roles, error } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", userId);
-
-      if (error) {
-        console.error("Error checking admin status:", error);
-        setIsAdmin(false);
-        return;
-      }
-
-      setIsAdmin(roles?.some(r => r.role === "admin" || r.role === "super_admin") || false);
-    } catch (error) {
-      console.error("Exception checking admin status:", error);
-      setIsAdmin(false);
-    }
-  };
 
   // Always show unified sidebar except for special routes (studio, broadcast, meetings)
   // Note: /studio/clips now shows top nav (sticky header)
@@ -1706,16 +1656,18 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <DomainRedirect>
-              <PortalProvider>
-                <CommandPaletteProvider>
-                  <AIAssistantProvider>
-                    <AppContent />
-                    <AIAssistantPanel />
-                  </AIAssistantProvider>
-                </CommandPaletteProvider>
-              </PortalProvider>
-            </DomainRedirect>
+            <AuthProvider>
+              <DomainRedirect>
+                <PortalProvider>
+                  <CommandPaletteProvider>
+                    <AIAssistantProvider>
+                      <AppContent />
+                      <AIAssistantPanel />
+                    </AIAssistantProvider>
+                  </CommandPaletteProvider>
+                </PortalProvider>
+              </DomainRedirect>
+            </AuthProvider>
           </BrowserRouter>
         </TooltipProvider>
       </ThemeProvider>
