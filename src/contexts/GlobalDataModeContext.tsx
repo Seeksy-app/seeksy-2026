@@ -29,7 +29,7 @@ export function GlobalDataModeProvider({ children }: { children: React.ReactNode
           .from('app_settings')
           .select('data_mode')
           .eq('key', 'global')
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error('Error fetching data mode:', error);

@@ -12,7 +12,7 @@ export async function fetchHolidaySettings(): Promise<HolidaySettings> {
       .from("app_settings")
       .select("holiday_mode, holiday_snow")
       .eq("key", "global")
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.warn("Failed to fetch holiday settings, using defaults:", error);
