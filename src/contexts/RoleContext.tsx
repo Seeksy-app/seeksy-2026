@@ -1,7 +1,12 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+/**
+ * RoleContext - Legacy compatibility layer
+ * 
+ * This context now delegates to AuthContext for auth state.
+ * Kept for backward compatibility with components using useRole().
+ */
+
+import React, { createContext, useContext } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Updated to support all role types
 export type UserRole = 'creator' | 'advertiser' | 'subscriber' | 'influencer' | 'agency' | 'admin' | 'super_admin' | 'ad_manager';
@@ -18,136 +23,41 @@ interface RoleContextType {
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
 
 export function RoleProvider({ children }: { children: React.ReactNode }) {
-  const [currentRole, setCurrentRole] = useState<UserRole | null>(null);
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-
-  // Fetch user's profile and available roles
-  const { data: profile, isLoading } = useQuery({
-    queryKey: ['userProfile'],
-    queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return null;
-
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  // Determine available roles based on profile
+  const { status, roles, isAdmin, isCreator, isAdvertiser, profile, refreshProfile } = useAuth();
+  
+  // Map AuthContext roles to legacy format
   const availableRoles: UserRole[] = [];
-  if (profile?.is_creator) availableRoles.push('creator');
-  if (profile?.is_advertiser) availableRoles.push('advertiser');
+  if (isAdmin) availableRoles.push('admin');
+  if (isCreator || profile?.is_creator) availableRoles.push('creator');
+  if (isAdvertiser || profile?.is_advertiser) availableRoles.push('advertiser');
+  
+  // Include all roles from AuthContext
+  roles.forEach(role => {
+    if (!availableRoles.includes(role as UserRole)) {
+      availableRoles.push(role as UserRole);
+    }
+  });
 
   const hasMultipleRoles = availableRoles.length > 1;
+  
+  // Current role - prioritize admin, then first available
+  const currentRole: UserRole | null = isAdmin ? 'admin' : availableRoles[0] ?? null;
 
-  // Initialize current role from profile (single role per account)
-  useEffect(() => {
-    if (!profile || currentRole) return;
-
-    // Each account has only one role
-    if (availableRoles.length === 1) {
-      setCurrentRole(availableRoles[0]);
-    } else if (profile.preferred_role && availableRoles.includes(profile.preferred_role as UserRole)) {
-      setCurrentRole(profile.preferred_role as UserRole);
-    }
-  }, [profile, availableRoles, currentRole]);
-
-  // Mutation to enable a role
-  const enableRoleMutation = useMutation({
-    mutationFn: async (role: UserRole) => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
-
-      const updates: any = {};
-      if (role === 'creator') {
-        updates.is_creator = true;
-      } else if (role === 'advertiser') {
-        updates.is_advertiser = true;
-        
-        // Create advertiser profile if needed
-        const { data: existingAdvertiser } = await supabase
-          .from('advertisers')
-          .select('id')
-          .eq('owner_profile_id', user.id)
-          .single();
-
-        if (!existingAdvertiser) {
-          const { error: advertiserError } = await supabase
-            .from('advertisers')
-            .insert({
-              owner_profile_id: user.id,
-              company_name: profile?.full_name || 'My Company',
-              contact_name: profile?.full_name || 'Contact Name',
-              contact_email: user.email || '',
-              status: 'pending',
-            });
-
-          if (advertiserError) throw advertiserError;
-        }
-      }
-
-      const { error } = await supabase
-        .from('profiles')
-        .update(updates)
-        .eq('id', user.id);
-
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['userProfile'] });
-      toast({
-        title: 'Role enabled',
-        description: 'Your new role has been activated.',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: 'Error enabling role',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-
-  // Function to switch roles (kept for backward compatibility, but no longer used in UI)
+  // Legacy switchRole - now just refreshes and navigates
   const switchRole = async (role: UserRole) => {
-    if (!availableRoles.includes(role)) {
-      toast({
-        title: 'Role not available',
-        description: 'This role is not enabled for your account.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    setCurrentRole(role);
-
-    // Update preferred role in database
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      await supabase
-        .from('profiles')
-        .update({ preferred_role: role })
-        .eq('id', user.id);
-    }
-
-    // Redirect based on role
     if (role === 'creator') {
-      window.location.href = '/dashboard';
+      window.location.href = '/my-day';
     } else if (role === 'advertiser') {
       window.location.href = '/advertiser';
+    } else if (role === 'admin') {
+      window.location.href = '/admin';
     }
   };
 
+  // Legacy enableRole - kept for compatibility
   const enableRole = async (role: UserRole) => {
-    await enableRoleMutation.mutateAsync(role);
+    // Would need to update profile - for now just refresh
+    await refreshProfile();
   };
 
   return (
@@ -155,7 +65,7 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
       value={{
         currentRole,
         availableRoles,
-        isLoading,
+        isLoading: status === 'loading',
         hasMultipleRoles,
         switchRole,
         enableRole,

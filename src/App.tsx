@@ -1600,6 +1600,9 @@ const AppContent = () => {
   );
 };
 
+// DEV only debug badge
+import AuthDebugBadge from "@/components/dev/AuthDebugBadge";
+
 const App = () => (
   <AppErrorBoundary>
     <QueryClientProvider client={queryClient}>
@@ -1615,6 +1618,7 @@ const App = () => (
                     <AIAssistantProvider>
                       <AppContent />
                       <AIAssistantPanel />
+                      {import.meta.env.DEV && <AuthDebugBadge />}
                     </AIAssistantProvider>
                   </CommandPaletteProvider>
                 </PortalProvider>
