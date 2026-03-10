@@ -42,14 +42,14 @@ export const ShareInvestorDialog = ({ open, onOpenChange }: ShareInvestorDialogP
       expiresAt.setDate(expiresAt.getDate() + expiryDays);
 
       // Get user profile for investor_name
-      const { data: profileData } = await supabase
+      const { data: profileData } = await (supabase as any)
         .from("profiles")
         .select("full_name")
         .eq("id", user.id)
         .single();
 
       // Insert access record in investor_shares table
-      const { error: insertError } = await supabase
+      const { error: insertError } = await (supabase as any)
         .from('investor_shares')
         .insert({
           user_id: user.id,
@@ -57,7 +57,7 @@ export const ShareInvestorDialog = ({ open, onOpenChange }: ShareInvestorDialogP
           investor_name: email.split('@')[0], // Use email username as placeholder
           access_code: accessCode,
           expires_at: expiresAt.toISOString(),
-          notes: `Shared by ${profileData?.full_name || 'Admin'}`,
+          notes: `Shared by ${(profileData as any)?.full_name || 'Admin'}`,
         });
 
       if (insertError) throw insertError;
