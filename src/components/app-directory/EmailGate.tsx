@@ -38,7 +38,7 @@ export function EmailGate({ onSubmit }: EmailGateProps) {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="relative z-10 mx-auto max-w-[620px] w-full text-center rounded-2xl px-8 py-12 sm:px-12 sm:py-16 bg-card/60 backdrop-blur-xl shadow-2xl border border-border/20"
+        className="relative z-10 mx-auto max-w-[620px] w-full text-center rounded-2xl px-8 py-12 sm:px-12 sm:py-16 bg-card/55 backdrop-blur-xl shadow-2xl border border-border/20"
       >
         {/* Eyebrow */}
         <motion.p
@@ -71,7 +71,7 @@ export function EmailGate({ onSubmit }: EmailGateProps) {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.35 }}
-          className="text-base leading-relaxed text-muted-foreground mt-3.5 max-w-[440px] mx-auto"
+          className="text-base leading-relaxed text-white mt-3.5 max-w-[440px] mx-auto"
         >
           A suite of 35+ AI-first workplace applications — available for enterprise licensing, partnership, or strategic acquisition.
         </motion.p>
@@ -111,7 +111,7 @@ export function EmailGate({ onSubmit }: EmailGateProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.65 }}
-          className="text-xs text-muted-foreground mt-3.5"
+          className="text-xs text-white mt-3.5"
         >
           No signup required · We just want to know who's interested
         </motion.p>
