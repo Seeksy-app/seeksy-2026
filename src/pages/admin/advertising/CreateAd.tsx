@@ -65,7 +65,7 @@ export default function CreateAd() {
 
     try {
       const selectedCampaign = campaigns?.find(c => c.id === formData.campaign_id);
-      const advertiserId = selectedCampaign?.advertisers?.id;
+      const advertiserId = (selectedCampaign as any)?.advertisers?.id;
 
       if (!advertiserId) {
         throw new Error("Could not determine advertiser");
