@@ -74,7 +74,7 @@ const MODULE_HERO_MAP: Record<string, string> = {
   "proposals": heroProposals,
   "deals": heroDeals,
   "my-page": heroMypage,
-  "identity-verification": heroIdentity,
+  "identity-verification": heroNilProtection,
   "broadcast-monitoring": heroBroadcast,
   "blog": heroBlog,
   "spark-ai": heroSpark,
