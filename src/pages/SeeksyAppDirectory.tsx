@@ -138,17 +138,10 @@ function getCategoryName(categoryId: string): string {
 }
 
 function BundleCard({ collection }: { collection: SeeksyCollection }) {
-  const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
   const Icon = collection.icon;
   const heroImage = COLLECTION_HERO_MAP[collection.id] || heroStudio;
   const includedModules = SEEKSY_MODULES.filter(m => collection.includedApps.includes(m.id));
-
-  const handleCopy = () => {
-    const text = `**${collection.name}**\n${collection.description}\n\nIncludes ${includedModules.length} modules:\n${includedModules.map(m => `• ${m.name}`).join('\n')}`;
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <Card className="group relative overflow-hidden hover:shadow-lg transition-shadow border border-border/60">
@@ -162,16 +155,11 @@ function BundleCard({ collection }: { collection: SeeksyCollection }) {
         )}
       </div>
       <CardContent className="p-5 space-y-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: collection.color + "20" }}>
-              <Icon className="h-5 w-5" style={{ color: collection.color }} />
-            </div>
-            <h3 className="font-bold text-foreground text-lg">{collection.name}</h3>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: collection.color + "20" }}>
+            <Icon className="h-5 w-5" style={{ color: collection.color }} />
           </div>
-          <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={handleCopy}>
-            {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
-          </Button>
+          <h3 className="font-bold text-foreground text-lg">{collection.name}</h3>
         </div>
 
         <p className="text-sm text-muted-foreground leading-relaxed">{collection.description}</p>
@@ -195,9 +183,9 @@ function BundleCard({ collection }: { collection: SeeksyCollection }) {
               {collection.usersCount.toLocaleString()} users
             </div>
           )}
-          <Button size="sm" className="gap-1.5 text-xs rounded-full">
+          <Button size="sm" className="gap-1.5 text-xs rounded-full" onClick={() => navigate(`/app-directory/bundle/${collection.id}`)}>
             <Eye className="h-3.5 w-3.5" />
-            View & Install
+            View Apps
           </Button>
         </div>
       </CardContent>
