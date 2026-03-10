@@ -24,8 +24,8 @@ export function OpportunityVideoManager({ opportunityId, opportunityName }: Oppo
   const { data: allVideos } = useQuery<DemoVideo[]>({
     queryKey: ["all-demo-videos"],
     queryFn: async () => {
-      const result = await (supabase
-        .from("demo_videos") as any)
+      const result = await (supabase as any)
+        .from("demo_videos")
         .select("id, title, thumbnail_url, duration_seconds, category")
         .eq("is_active", true)
         .order("title");
