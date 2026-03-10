@@ -30,7 +30,7 @@ export function EmailGate({ onSubmit }: EmailGateProps) {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${productiveTeamBg})` }}
       />
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/20" />
 
       {/* Frosted glass card */}
       <motion.div
