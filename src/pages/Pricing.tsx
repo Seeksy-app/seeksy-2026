@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, X, Zap, HardDrive, Video, Radio } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { TopNavigation } from "@/components/homepage/TopNavigation";
+import { FooterSection } from "@/components/homepage/FooterSection";
 
 const Pricing = () => {
   const navigate = useNavigate();
@@ -61,23 +63,8 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-primary cursor-pointer" onClick={() => navigate("/")}>
-            Seeksy
-          </h2>
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" onClick={() => navigate("/auth?mode=login")}>
-              Log In
-            </Button>
-            <Button onClick={() => navigate("/auth?mode=signup")}>
-              Sign Up
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-16">
+      <TopNavigation />
+      <main className="container mx-auto px-4 py-16 pt-24">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Usage-Based Credit Pricing</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -346,18 +333,7 @@ const Pricing = () => {
         </section>
       </main>
 
-      <footer className="border-t border-border py-8 text-center text-muted-foreground mt-20">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-4">
-            <a href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</a>
-            <span className="hidden md:inline">•</span>
-            <a href="/terms" className="hover:text-primary transition-colors">Terms & Conditions</a>
-            <span className="hidden md:inline">•</span>
-            <a href="/cookies" className="hover:text-primary transition-colors">Cookie Policy</a>
-          </div>
-          <p>© 2024 Seeksy. Connecting Your Way.</p>
-        </div>
-      </footer>
+      <FooterSection />
     </div>
   );
 };
