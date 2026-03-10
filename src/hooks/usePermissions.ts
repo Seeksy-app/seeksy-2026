@@ -104,7 +104,7 @@ export function usePermissions(): UsePermissionsReturn {
   };
 
   return {
-    permissions,
+    permissions: permissions as string[],
     isLoading,
     error: error as Error | null,
     hasPermission,
