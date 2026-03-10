@@ -1,8 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Copy, Check, Users, Eye, CheckCircle2 } from "lucide-react";
+import { Users, Eye, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FooterSection } from "@/components/homepage/FooterSection";
 import { SEEKSY_COLLECTIONS, type SeeksyCollection } from "@/components/modules/collectionData";
 import { SEEKSY_MODULES, type SeeksyModule, MODULE_CATEGORIES } from "@/components/modules/moduleData";
@@ -137,17 +138,10 @@ function getCategoryName(categoryId: string): string {
 }
 
 function BundleCard({ collection }: { collection: SeeksyCollection }) {
-  const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
   const Icon = collection.icon;
   const heroImage = COLLECTION_HERO_MAP[collection.id] || heroStudio;
   const includedModules = SEEKSY_MODULES.filter(m => collection.includedApps.includes(m.id));
-
-  const handleCopy = () => {
-    const text = `**${collection.name}**\n${collection.description}\n\nIncludes ${includedModules.length} modules:\n${includedModules.map(m => `• ${m.name}`).join('\n')}`;
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <Card className="group relative overflow-hidden hover:shadow-lg transition-shadow border border-border/60">
@@ -161,16 +155,11 @@ function BundleCard({ collection }: { collection: SeeksyCollection }) {
         )}
       </div>
       <CardContent className="p-5 space-y-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: collection.color + "20" }}>
-              <Icon className="h-5 w-5" style={{ color: collection.color }} />
-            </div>
-            <h3 className="font-bold text-foreground text-lg">{collection.name}</h3>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: collection.color + "20" }}>
+            <Icon className="h-5 w-5" style={{ color: collection.color }} />
           </div>
-          <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={handleCopy}>
-            {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
-          </Button>
+          <h3 className="font-bold text-foreground text-lg">{collection.name}</h3>
         </div>
 
         <p className="text-sm text-muted-foreground leading-relaxed">{collection.description}</p>
@@ -194,9 +183,9 @@ function BundleCard({ collection }: { collection: SeeksyCollection }) {
               {collection.usersCount.toLocaleString()} users
             </div>
           )}
-          <Button size="sm" className="gap-1.5 text-xs rounded-full">
+          <Button size="sm" className="gap-1.5 text-xs rounded-full" onClick={() => navigate(`/app-directory/bundle/${collection.id}`)}>
             <Eye className="h-3.5 w-3.5" />
-            View & Install
+            View Apps
           </Button>
         </div>
       </CardContent>
@@ -205,19 +194,9 @@ function BundleCard({ collection }: { collection: SeeksyCollection }) {
 }
 
 function AppCard({ module }: { module: SeeksyModule }) {
-  const [copied, setCopied] = useState(false);
   const Icon = module.icon;
   const heroImage = MODULE_HERO_MAP[module.id] || heroStudio;
   const details = APP_DETAILS[module.id];
-
-  const handleCopy = () => {
-    const text = details
-      ? `**${module.name}**\n${details.tagline}\n\n${details.longDescription}\n\nFeatures:\n${details.features.map(f => `• ${f}`).join('\n')}\n\nBest for: ${details.bestFor.join(', ')}`
-      : `${module.name}: ${module.description}`;
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const tagline = details?.tagline || module.description;
   const longDescription = details?.longDescription || "";
@@ -234,21 +213,16 @@ function AppCard({ module }: { module: SeeksyModule }) {
         </div>
       </div>
       <CardContent className="p-5 space-y-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${module.iconBg || "bg-primary/10"}`}>
-              <Icon className={`h-5 w-5 ${module.iconColor || "text-primary"}`} />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="font-bold text-foreground">{module.name}</h3>
-              </div>
-              <p className="text-xs text-muted-foreground">{getCategoryName(module.category)}</p>
-            </div>
+        <div className="flex items-center gap-3">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${module.iconBg || "bg-primary/10"}`}>
+            <Icon className={`h-5 w-5 ${module.iconColor || "text-primary"}`} />
           </div>
-          <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={handleCopy}>
-            {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
-          </Button>
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="font-bold text-foreground">{module.name}</h3>
+            </div>
+            <p className="text-xs text-muted-foreground">{getCategoryName(module.category)}</p>
+          </div>
         </div>
 
         <p className="text-sm font-medium text-foreground leading-snug">{tagline}</p>
@@ -285,42 +259,13 @@ function AppCard({ module }: { module: SeeksyModule }) {
 
 export default function SeeksyAppDirectory() {
   const [tab, setTab] = useState<"bundles" | "apps">("bundles");
-  const [copiedAll, setCopiedAll] = useState(false);
-
-  const copyAll = () => {
-    const text =
-      tab === "apps"
-        ? SEEKSY_MODULES.map((m) => {
-            const d = APP_DETAILS[m.id];
-            return d
-              ? `## ${m.name}\n${d.tagline}\n\n${d.longDescription}\n\nFeatures:\n${d.features.map(f => `• ${f}`).join('\n')}\n\nBest for: ${d.bestFor.join(', ')}`
-              : `## ${m.name}\n${m.description}`;
-          }).join("\n\n---\n\n")
-        : SEEKSY_COLLECTIONS.map(
-            (c) => `## ${c.name}\n${c.description}\n\nIncludes: ${c.includedApps.join(", ")}`
-          ).join("\n\n---\n\n");
-    navigator.clipboard.writeText(text);
-    setCopiedAll(true);
-    setTimeout(() => setCopiedAll(false), 2000);
-  };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Nav removed */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Seeksy App Directory</h1>
-            <p className="text-muted-foreground mt-1">
-              {tab === "bundles"
-                ? `${SEEKSY_COLLECTIONS.length} curated bundles with descriptions. Click the copy icon on any card to copy its description.`
-                : `All ${SEEKSY_MODULES.length} Seeksy modules with descriptions. Click the copy icon on any card to copy its description.`}
-            </p>
-          </div>
-          <Button onClick={copyAll} variant="outline" className="gap-2 shrink-0">
-            {copiedAll ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-            {copiedAll ? "Copied!" : "Copy All"}
-          </Button>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-foreground">Seeksy App Directory</h1>
         </div>
 
         {/* Pill Tabs */}
