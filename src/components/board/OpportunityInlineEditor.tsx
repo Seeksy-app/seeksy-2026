@@ -103,7 +103,7 @@ export function OpportunityInlineEditor({ opportunity, onClose }: OpportunityInl
   const { data: attachedProformas } = useQuery({
     queryKey: ["opportunity-proformas-attached", opportunity.id],
     queryFn: async () => {
-      const result = await (supabase.from("sales_opportunity_proformas") as any)
+      const result = await (supabase as any).from("sales_opportunity_proformas")
         .select("proforma_id")
         .eq("opportunity_id", opportunity.id);
       return (result.data || []).map((p: any) => p.proforma_id) as string[];
