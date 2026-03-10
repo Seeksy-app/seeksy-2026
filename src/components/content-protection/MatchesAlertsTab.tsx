@@ -27,7 +27,7 @@ export const MatchesAlertsTab = () => {
 
   const updateStatusMutation = useMutation({
     mutationFn: async ({ matchId, status }: { matchId: string; status: string }) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("content_matches")
         .update({ status, reviewed_at: new Date().toISOString() })
         .eq("id", matchId);
