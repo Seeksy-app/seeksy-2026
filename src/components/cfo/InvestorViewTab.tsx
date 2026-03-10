@@ -14,12 +14,12 @@ export function InvestorViewTab() {
   const { data: scenarios } = useQuery({
     queryKey: ["ad-financial-scenarios"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("ad_financial_scenarios")
         .select("*")
         .order("created_at", { ascending: true });
       if (error) throw error;
-      return data;
+      return (data as any[]) || [];
     },
   });
 
