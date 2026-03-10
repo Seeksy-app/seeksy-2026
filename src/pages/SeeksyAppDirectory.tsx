@@ -1,8 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Users, Eye, CheckCircle2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Users, Eye, CheckCircle2, PlusCircle, Check } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { FooterSection } from "@/components/homepage/FooterSection";
 import { SEEKSY_COLLECTIONS, type SeeksyCollection } from "@/components/modules/collectionData";
@@ -10,6 +10,9 @@ import { SEEKSY_MODULES, type SeeksyModule, MODULE_CATEGORIES } from "@/componen
 import { EmailGate } from "@/components/app-directory/EmailGate";
 import { useProspectusGate, useProspectusPageView, useUpdateSessionDuration } from "@/hooks/useProspectusTracking";
 import { supabase } from "@/integrations/supabase/client";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Hero images
 import heroStudio from "@/assets/app-hero-studio.jpg";
@@ -141,7 +144,42 @@ function getCategoryName(categoryId: string): string {
   return cat?.name || categoryId;
 }
 
-function BundleCard({ collection }: { collection: SeeksyCollection }) {
+function RequestInfoButton({ 
+  itemName, 
+  requested, 
+  onRequest 
+}: { 
+  itemName: string; 
+  requested: boolean; 
+  onRequest: (name: string) => void;
+}) {
+  return (
+    <TooltipProvider delayDuration={200}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!requested) onRequest(itemName);
+            }}
+            className={`absolute top-3 left-3 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all shadow-md ${
+              requested
+                ? "bg-green-500 text-white"
+                : "bg-white/90 text-muted-foreground hover:bg-primary hover:text-primary-foreground"
+            }`}
+          >
+            {requested ? <Check className="h-4 w-4" /> : <PlusCircle className="h-4 w-4" />}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="text-xs">
+          {requested ? "Info requested ✓" : "Request more info"}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+
+function BundleCard({ collection, requested, onRequest }: { collection: SeeksyCollection; requested: boolean; onRequest: (name: string) => void }) {
   const navigate = useNavigate();
   const Icon = collection.icon;
   const heroImage = COLLECTION_HERO_MAP[collection.id] || heroStudio;
@@ -150,6 +188,7 @@ function BundleCard({ collection }: { collection: SeeksyCollection }) {
   return (
     <Card className="group relative overflow-hidden hover:shadow-lg transition-shadow border border-border/60">
       <div className="relative h-52 overflow-hidden">
+        <RequestInfoButton itemName={collection.name} requested={requested} onRequest={onRequest} />
         <img src={heroImage} alt={collection.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         {collection.isPopular && (
@@ -196,8 +235,7 @@ function BundleCard({ collection }: { collection: SeeksyCollection }) {
     </Card>
   );
 }
-
-function AppCard({ module }: { module: SeeksyModule }) {
+function AppCard({ module, requested, onRequest }: { module: SeeksyModule; requested: boolean; onRequest: (name: string) => void }) {
   const Icon = module.icon;
   const heroImage = MODULE_HERO_MAP[module.id] || heroStudio;
   const details = APP_DETAILS[module.id];
@@ -210,6 +248,7 @@ function AppCard({ module }: { module: SeeksyModule }) {
   return (
     <Card className="group relative overflow-hidden hover:shadow-lg transition-shadow border border-border/60">
       <div className="relative h-52 overflow-hidden">
+        <RequestInfoButton itemName={module.name} requested={requested} onRequest={onRequest} />
         <img src={heroImage} alt={module.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
         <div className="absolute top-2 right-2 flex gap-1">
           {module.isNew && <Badge className="bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5">New</Badge>}
@@ -260,10 +299,12 @@ function AppCard({ module }: { module: SeeksyModule }) {
     </Card>
   );
 }
-
 export default function SeeksyAppDirectory() {
   const [tab, setTab] = useState<"bundles" | "apps">("bundles");
   const { email, sessionId, startSession } = useProspectusGate();
+  const [requestedItems, setRequestedItems] = useState<Set<string>>(new Set());
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [lastRequestedName, setLastRequestedName] = useState("");
 
   // Track session duration
   useUpdateSessionDuration(sessionId);
@@ -277,6 +318,22 @@ export default function SeeksyAppDirectory() {
     (supabase.from("prospectus_page_views") as any)
       .insert({ session_id: sessionId, page_name: name, viewed_at: new Date().toISOString() });
   };
+
+  const handleRequestInfo = useCallback((itemName: string) => {
+    setRequestedItems(prev => new Set(prev).add(itemName));
+    setLastRequestedName(itemName);
+    setShowConfirmDialog(true);
+
+    // Log the request
+    if (sessionId) {
+      (supabase.from("prospectus_page_views") as any)
+        .insert({ 
+          session_id: sessionId, 
+          page_name: `INFO_REQUEST: ${itemName}`, 
+          viewed_at: new Date().toISOString() 
+        });
+    }
+  }, [sessionId]);
 
   if (!email) {
     return <EmailGate onSubmit={startSession} />;
@@ -317,7 +374,11 @@ export default function SeeksyAppDirectory() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {SEEKSY_COLLECTIONS.map((collection) => (
               <div key={collection.id} onMouseEnter={() => trackCardView(collection.name)}>
-                <BundleCard collection={collection} />
+                <BundleCard 
+                  collection={collection} 
+                  requested={requestedItems.has(collection.name)}
+                  onRequest={handleRequestInfo}
+                />
               </div>
             ))}
           </div>
@@ -325,13 +386,41 @@ export default function SeeksyAppDirectory() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {SEEKSY_MODULES.map((module) => (
               <div key={module.id} onMouseEnter={() => trackCardView(module.name)}>
-                <AppCard module={module} />
+                <AppCard 
+                  module={module}
+                  requested={requestedItems.has(module.name)}
+                  onRequest={handleRequestInfo}
+                />
               </div>
             ))}
           </div>
         )}
       </main>
       <FooterSection />
+
+      {/* Confirmation Dialog */}
+      <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+        <DialogContent className="sm:max-w-md text-center">
+          <DialogHeader className="items-center">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15 }}
+              className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-2"
+            >
+              <Check className="h-7 w-7 text-green-600" />
+            </motion.div>
+            <DialogTitle className="text-xl font-bold text-foreground">Info Requested!</DialogTitle>
+            <DialogDescription className="text-muted-foreground text-sm leading-relaxed pt-1">
+              Thanks for your interest in <span className="font-semibold text-foreground">{lastRequestedName}</span>. 
+              Someone from our team will reach out shortly with more information.
+            </DialogDescription>
+          </DialogHeader>
+          <Button onClick={() => setShowConfirmDialog(false)} className="mt-2 rounded-full">
+            Continue Browsing
+          </Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
