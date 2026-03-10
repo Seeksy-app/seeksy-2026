@@ -1,5 +1,5 @@
 // Fully permissive Database type that bypasses Supabase SelectQueryError
-// for relational queries while maintaining structural compatibility
+// Using `any` for Relationships to prevent the SDK's relation validation
 
 export type Json =
   | string
@@ -9,26 +9,23 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-// A permissive table type where all queries resolve to `any`
-interface PermissiveTable {
-  Row: Record<string, any>
-  Insert: Record<string, any>
-  Update: Record<string, any>
-  Relationships: []  // Empty tuple - prevents SelectQueryError by skipping relation validation
-}
-
 export interface Database {
   __InternalSupabase: {
     PostgrestVersion: "14.1"
   }
   public: {
     Tables: {
-      [tableName: string]: PermissiveTable
+      [tableName: string]: {
+        Row: Record<string, any>
+        Insert: Record<string, any>
+        Update: Record<string, any>
+        Relationships: any
+      }
     }
     Views: {
       [viewName: string]: {
         Row: Record<string, any>
-        Relationships: []
+        Relationships: any
       }
     }
     Functions: {
