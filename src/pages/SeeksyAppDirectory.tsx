@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Copy, Check, Users, Eye, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
-import { TopNavigation } from "@/components/homepage/TopNavigation";
 import { FooterSection } from "@/components/homepage/FooterSection";
 import { SEEKSY_COLLECTIONS, type SeeksyCollection } from "@/components/modules/collectionData";
 import { SEEKSY_MODULES, type SeeksyModule, MODULE_CATEGORIES } from "@/components/modules/moduleData";
@@ -19,60 +18,73 @@ import heroAi from "@/assets/app-hero-ai.jpg";
 import heroIdentity from "@/assets/app-hero-identity.jpg";
 import heroVideo from "@/assets/app-hero-video.jpg";
 import heroEmail from "@/assets/app-hero-email.jpg";
-
-const CATEGORY_HERO_MAP: Record<string, string> = {
-  "creator-studio": heroStudio,
-  "podcasting": heroStudio,
-  "campaigns": heroMarketing,
-  "events": heroEvents,
-  "crm-business": heroCrm,
-  "analytics": heroAnalytics,
-  "identity": heroIdentity,
-  "ai-tools": heroAi,
-  "content": heroEmail,
-};
+import heroPodcasts from "@/assets/app-hero-podcasts.jpg";
+import heroAutomations from "@/assets/app-hero-automations.jpg";
+import heroMeetings from "@/assets/app-hero-meetings.jpg";
+import heroForms from "@/assets/app-hero-forms.jpg";
+import heroBlog from "@/assets/app-hero-blog.jpg";
+import heroProposals from "@/assets/app-hero-proposals.jpg";
+import heroTasks from "@/assets/app-hero-tasks.jpg";
+import heroNewsletter from "@/assets/app-hero-newsletter.jpg";
+import heroSms from "@/assets/app-hero-sms.jpg";
+import heroAwards from "@/assets/app-hero-awards.jpg";
+import heroContacts from "@/assets/app-hero-contacts.jpg";
+import heroDeals from "@/assets/app-hero-deals.jpg";
+import heroPolls from "@/assets/app-hero-polls.jpg";
+import heroCloning from "@/assets/app-hero-cloning.jpg";
+import heroSocial from "@/assets/app-hero-social.jpg";
+import heroMypage from "@/assets/app-hero-mypage.jpg";
+import heroBroadcast from "@/assets/app-hero-broadcast.jpg";
+import heroSpark from "@/assets/app-hero-spark.jpg";
+import heroSignatures from "@/assets/app-hero-signatures.jpg";
+import heroSegments from "@/assets/app-hero-segments.jpg";
+import heroProjects from "@/assets/app-hero-projects.jpg";
+import heroPostprod from "@/assets/app-hero-postprod.jpg";
+import heroMedia from "@/assets/app-hero-media.jpg";
+import heroAgent from "@/assets/app-hero-agent.jpg";
+import heroAudience from "@/assets/app-hero-audience.jpg";
 
 const MODULE_HERO_MAP: Record<string, string> = {
   "studio": heroStudio,
   "ai-clips": heroClips,
-  "ai-post-production": heroStudio,
-  "media-library": heroVideo,
+  "ai-post-production": heroPostprod,
+  "media-library": heroMedia,
   "video-editor": heroVideo,
-  "cloning": heroAi,
-  "podcasts": heroStudio,
+  "cloning": heroCloning,
+  "podcasts": heroPodcasts,
   "campaigns": heroMarketing,
   "email": heroEmail,
-  "newsletter": heroEmail,
-  "sms": heroMarketing,
-  "automations": heroMarketing,
+  "newsletter": heroNewsletter,
+  "sms": heroSms,
+  "automations": heroAutomations,
   "events": heroEvents,
-  "meetings": heroEvents,
-  "forms": heroCrm,
-  "polls": heroAnalytics,
-  "awards": heroEvents,
+  "meetings": heroMeetings,
+  "forms": heroForms,
+  "polls": heroPolls,
+  "awards": heroAwards,
   "crm": heroCrm,
-  "contacts": heroCrm,
-  "project-management": heroCrm,
-  "tasks": heroCrm,
-  "proposals": heroCrm,
-  "deals": heroCrm,
-  "my-page": heroIdentity,
+  "contacts": heroContacts,
+  "project-management": heroProjects,
+  "tasks": heroTasks,
+  "proposals": heroProposals,
+  "deals": heroDeals,
+  "my-page": heroMypage,
   "identity-verification": heroIdentity,
-  "broadcast-monitoring": heroIdentity,
-  "blog": heroEmail,
-  "spark-ai": heroAi,
-  "ai-automation": heroAi,
-  "ai-agent": heroAi,
-  "social-analytics": heroAnalytics,
-  "audience-insights": heroAnalytics,
-  "social-connect": heroAnalytics,
-  "segments": heroMarketing,
-  "email-signatures": heroEmail,
+  "broadcast-monitoring": heroBroadcast,
+  "blog": heroBlog,
+  "spark-ai": heroSpark,
+  "ai-automation": heroAutomations,
+  "ai-agent": heroAgent,
+  "social-analytics": heroSocial,
+  "audience-insights": heroAudience,
+  "social-connect": heroSocial,
+  "segments": heroSegments,
+  "email-signatures": heroSignatures,
 };
 
 const COLLECTION_HERO_MAP: Record<string, string> = {
   "creator-studio": heroStudio,
-  "podcasting": heroStudio,
+  "podcasting": heroPodcasts,
   "marketing-hub": heroMarketing,
   "events-meetings": heroEvents,
   "crm-business": heroCrm,
