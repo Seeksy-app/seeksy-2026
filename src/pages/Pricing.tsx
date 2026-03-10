@@ -63,23 +63,8 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-primary cursor-pointer" onClick={() => navigate("/")}>
-            Seeksy
-          </h2>
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" onClick={() => navigate("/auth?mode=login")}>
-              Log In
-            </Button>
-            <Button onClick={() => navigate("/auth?mode=signup")}>
-              Sign Up
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-16">
+      <TopNavigation />
+      <main className="container mx-auto px-4 py-16 pt-24">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Usage-Based Credit Pricing</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
