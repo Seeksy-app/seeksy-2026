@@ -51,14 +51,14 @@ export function ShareToBoardModal({
   const { data: boardMembers, isLoading: loadingMembers } = useQuery({
     queryKey: ['board-members-for-share'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('board_members')
         .select('id, email, full_name, company, role')
         .eq('is_active', true)
         .order('full_name');
 
       if (error) throw error;
-      return data as BoardMember[];
+      return (data as any[] || []) as BoardMember[];
     },
     enabled: open,
   });

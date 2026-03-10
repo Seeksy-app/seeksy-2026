@@ -208,13 +208,13 @@ export function GenerateLinkModal({ open, onOpenChange, onSuccess }: GenerateLin
       if (sendEmail && investorEmail) {
         try {
           // Get board member info
-          const { data: profile } = await supabase
+          const { data: profile } = await (supabase as any)
             .from('profiles')
             .select('full_name')
             .eq('id', user.id)
             .single();
           
-          const boardMemberName = profile?.full_name || user.email?.split('@')[0] || 'Board Member';
+          const boardMemberName = (profile as any)?.full_name || user.email?.split('@')[0] || 'Board Member';
 
           await supabase.functions.invoke('send-investor-email', {
             body: {

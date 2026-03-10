@@ -40,13 +40,13 @@ export function CreatorEarningsTab() {
     queryKey: ["ad-financial-model-summaries", selectedScenario],
     queryFn: async () => {
       if (!selectedScenario) return null;
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("ad_financial_model_summaries")
         .select("*")
         .eq("scenario_id", selectedScenario)
         .single();
       if (error) throw error;
-      return data;
+      return data as any;
     },
     enabled: !!selectedScenario,
   });

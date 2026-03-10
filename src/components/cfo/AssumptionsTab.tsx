@@ -64,7 +64,7 @@ export function AssumptionsTab() {
   const updateMutation = useMutation({
     mutationFn: async (data: any) => {
       if (!assumptions?.id) throw new Error("No assumptions to update");
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("ad_financial_assumptions")
         .update(data)
         .eq("id", assumptions.id);

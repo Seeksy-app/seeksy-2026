@@ -20,13 +20,13 @@ export function InvestorAnalyticsCards() {
   const { data: activities } = useQuery({
     queryKey: ['allLinkActivities'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('investor_link_activity')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(100);
       if (error) throw error;
-      return data;
+      return (data as any[]) || [];
     },
   });
 
