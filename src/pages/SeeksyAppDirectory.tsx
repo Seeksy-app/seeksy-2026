@@ -144,7 +144,40 @@ function getCategoryName(categoryId: string): string {
   return cat?.name || categoryId;
 }
 
-function BundleCard({ collection }: { collection: SeeksyCollection }) {
+function RequestInfoButton({ 
+  itemName, 
+  requested, 
+  onRequest 
+}: { 
+  itemName: string; 
+  requested: boolean; 
+  onRequest: (name: string) => void;
+}) {
+  return (
+    <TooltipProvider delayDuration={200}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!requested) onRequest(itemName);
+            }}
+            className={`absolute top-3 left-3 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all shadow-md ${
+              requested
+                ? "bg-green-500 text-white"
+                : "bg-white/90 text-muted-foreground hover:bg-primary hover:text-primary-foreground"
+            }`}
+          >
+            {requested ? <Check className="h-4 w-4" /> : <PlusCircle className="h-4 w-4" />}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="text-xs">
+          {requested ? "Info requested ✓" : "Request more info"}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
   const navigate = useNavigate();
   const Icon = collection.icon;
   const heroImage = COLLECTION_HERO_MAP[collection.id] || heroStudio;
