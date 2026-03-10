@@ -15,6 +15,7 @@ import heroEvents from "@/assets/app-hero-events.jpg";
 import heroCrm from "@/assets/app-hero-crm.jpg";
 import heroAi from "@/assets/app-hero-ai.jpg";
 import heroIdentity from "@/assets/app-hero-identity.jpg";
+import heroNilProtection from "@/assets/app-hero-nil-protection.jpg";
 import heroVideo from "@/assets/app-hero-video.jpg";
 import heroEmail from "@/assets/app-hero-email.jpg";
 import heroPodcasts from "@/assets/app-hero-podcasts.jpg";
