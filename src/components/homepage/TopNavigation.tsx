@@ -306,15 +306,27 @@ export function TopNavigation() {
               <div className="px-2 py-2 mt-3">
                 <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">More</span>
               </div>
-              {navLinks.map((link) => (
-                <button
-                  key={link.label}
-                  onClick={() => handleNavigation(link.href)}
-                  className="w-full text-left px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
-                >
-                  {link.label}
-                </button>
-              ))}
+              {navLinks.map((link) => 
+                link.newTab ? (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full text-left px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition-colors block"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <button
+                    key={link.label}
+                    onClick={() => handleNavigation(link.href)}
+                    className="w-full text-left px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
+                  >
+                    {link.label}
+                  </button>
+                )
+              )}
               
               <div className="flex flex-col gap-2 pt-4 mt-3 border-t border-slate-100">
                 <Button
