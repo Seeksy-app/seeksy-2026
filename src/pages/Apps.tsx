@@ -492,7 +492,7 @@ const modules: Module[] = [
     collection: "identity",
     route: "/identity",
     isNew: true,
-    recommendedWith: ["My Page Builder"],
+    recommendedWith: ["Shareable Profile Page"],
     creditEstimate: 20,
   },
   {
