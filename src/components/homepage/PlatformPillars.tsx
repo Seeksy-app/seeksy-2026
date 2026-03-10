@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
-import { Video, Users, DollarSign, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import pillarCreate from "@/assets/pillar-create.jpg";
+import pillarConnect from "@/assets/pillar-connect.jpg";
+import pillarMonetize from "@/assets/pillar-monetize.jpg";
 
 const pillars = [
   {
@@ -9,13 +12,9 @@ const pillars = [
     title: "AI-powered content tools for every creator.",
     description:
       "Record podcasts, generate clips, edit videos, and create content with AI assistance. Our studio handles transcription, captions, and distribution automatically.",
-    icon: Video,
+    image: pillarCreate,
     link: "/apps?view=modules",
     linkText: "Explore Creator Tools",
-    gradient: "from-blue-500/10 to-cyan-500/10",
-    borderColor: "border-blue-500/20",
-    iconBg: "bg-blue-500/10",
-    iconColor: "text-blue-600",
   },
   {
     id: "connect",
@@ -23,13 +22,9 @@ const pillars = [
     title: "Build real relationships with your audience.",
     description:
       "Manage contacts, send emails and SMS, schedule meetings, and host events. Everything you need to grow and engage your community in one place.",
-    icon: Users,
+    image: pillarConnect,
     link: "/apps?view=modules",
     linkText: "See Engagement Tools",
-    gradient: "from-emerald-500/10 to-teal-500/10",
-    borderColor: "border-emerald-500/20",
-    iconBg: "bg-emerald-500/10",
-    iconColor: "text-emerald-600",
   },
   {
     id: "monetize",
@@ -37,13 +32,9 @@ const pillars = [
     title: "Turn your influence into income.",
     description:
       "Accept payments, sell tickets, manage sponsorships, and track revenue. Verified voice identity unlocks premium ad opportunities with brands.",
-    icon: DollarSign,
+    image: pillarMonetize,
     link: "/apps?view=modules",
     linkText: "Learn About Monetization",
-    gradient: "from-amber-500/10 to-orange-500/10",
-    borderColor: "border-amber-500/20",
-    iconBg: "bg-amber-500/10",
-    iconColor: "text-amber-600",
   },
 ];
 
@@ -79,29 +70,34 @@ export function PlatformPillars() {
           </p>
         </motion.div>
 
-        {/* Cards Grid - Taller cards */}
+        {/* Cards Grid */}
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-          {pillars.map((pillar, index) => {
-            const Icon = pillar.icon;
-            return (
-              <motion.div
-                key={pillar.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.4 }}
-                className="rounded-[28px] p-8 md:p-10 flex flex-col min-h-[380px]"
-                style={{
-                  background: "hsl(var(--card))",
-                  border: "1px solid hsl(var(--border))",
-                  boxShadow: "0 10px 40px -10px hsl(var(--foreground)/0.06)",
-                }}
-              >
-                {/* Icon */}
-                <div className={`w-16 h-16 rounded-2xl ${pillar.iconBg} flex items-center justify-center mb-6`}>
-                  <Icon className={`h-8 w-8 ${pillar.iconColor}`} />
-                </div>
+          {pillars.map((pillar, index) => (
+            <motion.div
+              key={pillar.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.4 }}
+              className="rounded-[28px] overflow-hidden flex flex-col"
+              style={{
+                background: "hsl(var(--card))",
+                border: "1px solid hsl(var(--border))",
+                boxShadow: "0 10px 40px -10px hsl(var(--foreground)/0.06)",
+              }}
+            >
+              {/* Image */}
+              <div className="w-full h-48 md:h-52 overflow-hidden">
+                <img
+                  src={pillar.image}
+                  alt={pillar.badge}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
 
+              {/* Content */}
+              <div className="p-8 md:p-10 flex flex-col flex-1">
                 {/* Badge */}
                 <span 
                   className="text-xs font-semibold mb-3 tracking-wide uppercase"
@@ -135,9 +131,9 @@ export function PlatformPillars() {
                   {pillar.linkText}
                   <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Link>
-              </motion.div>
-            );
-          })}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
