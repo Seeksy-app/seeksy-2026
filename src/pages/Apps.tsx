@@ -146,8 +146,8 @@ const categories: Category[] = [
     tooltipData: {
       purpose: "Everything related to who you are and how you show up publicly",
       bestForUsers: "Creators building their personal brand",
-      recommendedModules: ["My Page Builder", "Identity & Verification"],
-      exampleWorkflows: "Verify identity → Build My Page → Share link → Track visitors"
+      recommendedModules: ["Shareable Profile Page", "Identity & Verification"],
+      exampleWorkflows: "Verify identity → Build Profile Page → Share link → Track visitors"
     }
   },
   { 
