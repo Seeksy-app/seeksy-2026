@@ -216,6 +216,7 @@ const Comparison = () => {
           </div>
         </div>
       </div>
+      <FooterSection />
     </div>
   );
 };

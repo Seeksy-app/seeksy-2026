@@ -81,6 +81,7 @@ const Terms = () => {
           </section>
         </div>
       </div>
+      <FooterSection />
     </div>
   );
 };

@@ -208,6 +208,7 @@ const SecurityPublic = () => {
           </CardContent>
         </Card>
       </div>
+      <FooterSection />
     </div>
   );
 };

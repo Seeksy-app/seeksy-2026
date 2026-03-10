@@ -81,6 +81,7 @@ const Cookies = () => {
           </section>
         </div>
       </div>
+      <FooterSection />
     </div>
   );
 };
