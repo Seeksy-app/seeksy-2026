@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { Check, X, Sparkles, ArrowLeft } from "lucide-react";
+import { Check, X, Sparkles } from "lucide-react";
+import { TopNavigation } from "@/components/homepage/TopNavigation";
+import { FooterSection } from "@/components/homepage/FooterSection";
 
 const Comparison = () => {
   const navigate = useNavigate();
