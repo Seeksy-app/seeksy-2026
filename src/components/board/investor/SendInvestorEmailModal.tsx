@@ -41,12 +41,12 @@ export function SendInvestorEmailModal({
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setBoardMemberEmail(user.email || '');
-        const { data: profile } = await supabase
+        const { data: profile } = await (supabase as any)
           .from('profiles')
           .select('full_name')
           .eq('id', user.id)
           .single();
-        setBoardMemberName(profile?.full_name || user.email?.split('@')[0] || 'Board Member');
+        setBoardMemberName((profile as any)?.full_name || user.email?.split('@')[0] || 'Board Member');
       }
     };
     fetchUser();

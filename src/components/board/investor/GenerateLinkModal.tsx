@@ -183,7 +183,7 @@ export function GenerateLinkModal({ open, onOpenChange, onSuccess }: GenerateLin
       const passcode = generatePasscode();
       const expiresAt = calculateExpiration();
 
-      const { data, error } = await supabase.from('investor_links').insert({
+      const { data, error } = await (supabase as any).from('investor_links').insert({
         token,
         passcode,
         investor_name: investorName || null,
@@ -208,13 +208,13 @@ export function GenerateLinkModal({ open, onOpenChange, onSuccess }: GenerateLin
       if (sendEmail && investorEmail) {
         try {
           // Get board member info
-          const { data: profile } = await supabase
+          const { data: profile } = await (supabase as any)
             .from('profiles')
             .select('full_name')
             .eq('id', user.id)
             .single();
           
-          const boardMemberName = profile?.full_name || user.email?.split('@')[0] || 'Board Member';
+          const boardMemberName = (profile as any)?.full_name || user.email?.split('@')[0] || 'Board Member';
 
           await supabase.functions.invoke('send-investor-email', {
             body: {

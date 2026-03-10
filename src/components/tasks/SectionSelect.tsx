@@ -70,7 +70,7 @@ export function SectionSelect({ value, onValueChange }: SectionSelectProps) {
       return;
     }
 
-    setSections(data);
+    setSections(data as any[]);
   };
 
   const createDefaultSections = async (userId: string) => {
@@ -228,7 +228,7 @@ export function useSections() {
       .order('display_order');
 
     if (data) {
-      setSections(data);
+      setSections(data as any[]);
     }
   };
 

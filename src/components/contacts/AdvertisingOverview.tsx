@@ -28,13 +28,13 @@ export const AdvertisingOverview = ({ contact }: AdvertisingOverviewProps) => {
   const { data: linkedAdvertisers, isLoading: advertisersLoading } = useQuery({
     queryKey: ["contact-advertisers", contact.id],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("advertisers")
         .select("*")
         .or(`contact_email.eq.${contact.email},company_name.ilike.%${contact.company}%`);
       
       if (error) throw error;
-      return data || [];
+      return (data as any[]) || [];
     },
     enabled: !!contact.email || !!contact.company,
   });
@@ -47,7 +47,7 @@ export const AdvertisingOverview = ({ contact }: AdvertisingOverviewProps) => {
       
       const advertiserIds = linkedAdvertisers.map(a => a.id);
       
-      const { data: campaigns, error } = await supabase
+      const { data: campaigns, error } = await (supabase as any)
         .from("ad_campaigns")
         .select("*")
         .in("advertiser_id", advertiserIds);
