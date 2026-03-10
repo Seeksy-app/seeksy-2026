@@ -35,13 +35,13 @@ export function ShareWithInvestorTab() {
   const { data: links, isLoading } = useQuery({
     queryKey: ['investorLinks'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('investor_links')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(5);
       if (error) throw error;
-      return data as InvestorLink[];
+      return (data as InvestorLink[]) || [];
     },
   });
 
