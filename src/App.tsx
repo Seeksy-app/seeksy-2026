@@ -158,6 +158,7 @@ import DocCreatePage from "./pages/admin/legal/DocCreatePage";
 import StyleGuidePage from "./pages/admin/StyleGuidePage";
 import PendingInvestments from "./pages/admin/legal/PendingInvestments";
 import AdminSharePagesPage from "./pages/admin/AdminSharePagesPage";
+import ProspectusAccessLog from "./pages/admin/ProspectusAccessLog";
 import AdminSharePageEditorPage from "./pages/admin/AdminSharePageEditorPage";
 import SharePageViewerPage from "./pages/public/SharePageViewerPage";
 import SignerFormPage from "./pages/sign/SignerFormPage";
