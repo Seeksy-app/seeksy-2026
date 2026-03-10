@@ -624,7 +624,7 @@ export default function ProfileEdit() {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm font-medium">Streaming</p>
-                            <p className="text-xs text-muted-foreground">Show streaming on My Page</p>
+                            <p className="text-xs text-muted-foreground">Show streaming on your profile page</p>
                           </div>
                           <Switch checked={true} disabled />
                         </div>
