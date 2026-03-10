@@ -386,8 +386,8 @@ function AppCard({ app }: { app: SeeksyApp }) {
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute top-2 right-2 flex gap-1">
-          {app.isNew && <Badge className="bg-blue-600 text-white text-[10px] px-1.5 py-0.5">New</Badge>}
-          {app.hasAI && <Badge className="bg-purple-600 text-white text-[10px] px-1.5 py-0.5">✨ AI</Badge>}
+          {app.isNew && <Badge className="bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5">New</Badge>}
+          {app.hasAI && <Badge className="bg-accent text-accent-foreground text-[10px] px-1.5 py-0.5">✨ AI</Badge>}
         </div>
       </div>
       <CardContent className="p-4 space-y-2">
