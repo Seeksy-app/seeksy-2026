@@ -853,7 +853,7 @@ export default function ProfileEdit() {
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Streaming</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Enable streaming on your My Page
+                    Enable streaming on your Shareable Profile Page
                   </p>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between p-4 border rounded-lg">
