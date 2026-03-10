@@ -49,13 +49,13 @@ export function AssumptionsTab() {
     queryFn: async () => {
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("admin_revenue_reports")
         .select("*")
         .gte("period_start", thirtyDaysAgo.toISOString().split("T")[0])
         .order("period_start", { ascending: false });
       if (error) throw error;
-      return data || [];
+      return (data as any[]) || [];
     },
   });
 
