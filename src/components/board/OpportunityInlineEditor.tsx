@@ -166,7 +166,7 @@ export function OpportunityInlineEditor({ opportunity, onClose }: OpportunityInl
 
   const saveProformasMutation = useMutation({
     mutationFn: async (proformaIds: string[]) => {
-      await (supabase.from("sales_opportunity_proformas") as any)
+      await (supabase as any).from("sales_opportunity_proformas")
         .delete()
         .eq("opportunity_id", opportunity.id);
       if (proformaIds.length > 0) {
