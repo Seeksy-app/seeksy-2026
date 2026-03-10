@@ -95,7 +95,7 @@ export function UploadPastMeetingModal({
       const needsAudioTranscription = !hasTextTranscript && audioFile;
 
       // 1. Create the meeting record with host/creator info
-      const { data: meeting, error: createError } = await supabase
+      const { data: meeting, error: createError } = await (supabase as any)
         .from("board_meeting_notes")
         .insert({
           title: title.trim(),
@@ -104,7 +104,7 @@ export function UploadPastMeetingModal({
           meeting_agenda: agenda.trim() || null,
           ai_notes_status: hasTextTranscript ? "transcribed" : "pending",
           status: "completed",
-          duration_minutes: 60, // default
+          duration_minutes: 60,
           host_user_id: userData.user.id,
           created_by: userData.user.id,
         })
