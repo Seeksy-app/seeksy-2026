@@ -93,7 +93,7 @@ export function EmailGate({ onSubmit }: EmailGateProps) {
             marginRight: "auto",
           }}
         >
-          Enter your email to access 35+ AI-first productivity applications and 7 curated bundles designed for licensing, partnership, or acquisition.
+          A suite of 35+ AI-first workplace applications — available for enterprise licensing, partnership, or strategic acquisition.
         </motion.p>
 
         {/* Email Form */}
