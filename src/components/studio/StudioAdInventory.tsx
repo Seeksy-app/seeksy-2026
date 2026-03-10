@@ -45,7 +45,7 @@ export const StudioAdInventory = ({ onAdSelect, selectedAd }: StudioAdInventoryP
       if (error) throw error;
 
       // Filter to only include ads with active campaigns (including quick campaigns)
-      return data?.filter(ad => 
+      return (data as any[])?.filter((ad: any) => 
         ad.campaign && 
         ad.campaign.status === 'active' &&
         new Date(ad.campaign.start_date) <= new Date() &&
