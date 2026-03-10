@@ -32,10 +32,10 @@ const useCases = [
 ];
 
 const navLinks = [
-  { label: "Pricing", href: "/pricing" },
-  { label: "Apps & Tools", href: "/apps-and-tools" },
-  { label: "Blog", href: "/blog" },
-  { label: "About", href: "/about" },
+  { label: "Pricing", href: "/pricing", newTab: true },
+  { label: "Apps & Tools", href: "/apps-and-tools", newTab: false },
+  { label: "Blog", href: "/blog", newTab: false },
+  { label: "About", href: "/about", newTab: false },
 ];
 
 export function TopNavigation() {

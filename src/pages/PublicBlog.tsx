@@ -133,7 +133,7 @@ const PublicBlog = () => {
       <div className="min-h-screen bg-background">
         <TopNavigation />
         {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden pt-16">
         {/* Hero Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
