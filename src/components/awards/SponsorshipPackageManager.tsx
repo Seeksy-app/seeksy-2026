@@ -33,7 +33,7 @@ export function SponsorshipPackageManager({ programId }: SponsorshipPackageManag
   const { data: packages, refetch } = useQuery({
     queryKey: ["sponsorship-packages", programId],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("award_sponsorship_packages")
         .select("*")
         .eq("program_id", programId)
@@ -41,10 +41,9 @@ export function SponsorshipPackageManager({ programId }: SponsorshipPackageManag
       
       if (error) throw error;
 
-      // Fetch sponsor counts for each package
       const packagesWithCounts = await Promise.all(
-        (data || []).map(async (pkg) => {
-          const { count } = await supabase
+        ((data as any[]) || []).map(async (pkg: any) => {
+          const { count } = await (supabase as any)
             .from("award_sponsorships")
             .select("*", { count: "exact", head: true })
             .eq("package_id", pkg.id)
@@ -97,7 +96,7 @@ export function SponsorshipPackageManager({ programId }: SponsorshipPackageManag
             who_pays_processing: "sponsor",
           };
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("award_sponsorship_packages")
         .insert({
           program_id: programId,

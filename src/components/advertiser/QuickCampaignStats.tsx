@@ -13,7 +13,7 @@ export function QuickCampaignStats({ campaignId }: QuickCampaignStatsProps) {
   const { data: campaign, isLoading: campaignLoading } = useQuery({
     queryKey: ["quick-campaign", campaignId],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("ad_campaigns")
         .select(`
           *,
@@ -27,14 +27,14 @@ export function QuickCampaignStats({ campaignId }: QuickCampaignStatsProps) {
         .single();
 
       if (error) throw error;
-      return data;
+      return data as any;
     },
   });
 
   const { data: impressions, isLoading: impressionsLoading } = useQuery({
     queryKey: ["campaign-impressions", campaignId],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("ad_impressions")
         .select(`
           id,
@@ -50,7 +50,7 @@ export function QuickCampaignStats({ campaignId }: QuickCampaignStatsProps) {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return data;
+      return (data as any[]) || [];
     },
   });
 
@@ -68,7 +68,7 @@ export function QuickCampaignStats({ campaignId }: QuickCampaignStatsProps) {
   }, {} as Record<string, { count: number; profile: any }>);
 
   const topCreators = Object.entries(creatorImpressions || {})
-    .sort(([, a], [, b]) => b.count - a.count)
+    .sort(([, a], [, b]) => (b as any).count - (a as any).count)
     .slice(0, 5);
 
   if (campaignLoading) {
@@ -145,7 +145,9 @@ export function QuickCampaignStats({ campaignId }: QuickCampaignStatsProps) {
             <div>
               <h4 className="text-sm font-medium mb-3">Top Performing Creators</h4>
               <div className="space-y-2">
-                {topCreators.map(([creatorId, data]) => (
+                {topCreators.map(([creatorId, rawData]) => {
+                  const data = rawData as any;
+                  return (
                   <div
                     key={creatorId}
                     className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border border-border"
@@ -166,7 +168,8 @@ export function QuickCampaignStats({ campaignId }: QuickCampaignStatsProps) {
                     </div>
                     <Badge variant="secondary">{data.count} impressions</Badge>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}

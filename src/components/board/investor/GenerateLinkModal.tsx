@@ -81,12 +81,12 @@ export function GenerateLinkModal({ open, onOpenChange, onSuccess }: GenerateLin
   const { data: demoVideos } = useQuery({
     queryKey: ['demo-videos-for-share'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('demo_videos')
         .select('id, title, description, category, thumbnail_url')
         .order('order_index');
       if (error) throw error;
-      return data as DemoVideo[];
+      return (data as DemoVideo[]) || [];
     },
   });
 

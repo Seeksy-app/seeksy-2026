@@ -39,13 +39,14 @@ export const MemberFeedbackSection: React.FC<MemberFeedbackSectionProps> = ({
     setIsSubmitting(true);
     try {
       // Get user profile for name
-      const { data: profile } = await supabase
+      const { data: profile } = await (supabase as any)
         .from("profiles")
         .select("full_name, account_full_name")
         .eq("id", user.id)
         .single();
 
-      const authorName = profile?.full_name || profile?.account_full_name || user.email?.split("@")[0] || "Board Member";
+      const p = profile as any;
+      const authorName = p?.full_name || p?.account_full_name || user.email?.split("@")[0] || "Board Member";
 
       const newMemberNote: MemberNote = {
         id: crypto.randomUUID(),
@@ -57,7 +58,7 @@ export const MemberFeedbackSection: React.FC<MemberFeedbackSectionProps> = ({
 
       const updatedNotes = [...memberNotes, newMemberNote];
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("board_meeting_notes")
         .update({ member_notes: updatedNotes as any })
         .eq("id", meetingId);

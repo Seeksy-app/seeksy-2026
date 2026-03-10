@@ -36,7 +36,7 @@ export function NomineeManager({ programId }: NomineeManagerProps) {
   const { data: nominees, isLoading } = useQuery({
     queryKey: ["nominees", programId],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("award_nominees")
         .select(`
           *,
@@ -48,13 +48,13 @@ export function NomineeManager({ programId }: NomineeManagerProps) {
         .order("created_at", { ascending: false });
       
       if (error) throw error;
-      return data;
+      return (data as any[]) || [];
     },
   });
 
   const updateStatusMutation = useMutation({
     mutationFn: async ({ nomineeId, status }: { nomineeId: string; status: "pending" | "approved" | "rejected" }) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("award_nominees")
         .update({ status })
         .eq("id", nomineeId);
@@ -72,7 +72,7 @@ export function NomineeManager({ programId }: NomineeManagerProps) {
 
   const updateNomineeMutation = useMutation({
     mutationFn: async ({ nomineeId, updates }: { nomineeId: string; updates: any }) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("award_nominees")
         .update(updates)
         .eq("id", nomineeId);

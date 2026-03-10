@@ -101,7 +101,7 @@ export function InvestorShareModal({ open, onOpenChange }: InvestorShareModalPro
       const passcode = generatePasscode();
       const expiresAt = calculateExpiration();
 
-      const { error } = await supabase.from('investor_links').insert({
+      const { error } = await (supabase as any).from('investor_links').insert({
         token,
         passcode,
         investor_name: investorName || null,

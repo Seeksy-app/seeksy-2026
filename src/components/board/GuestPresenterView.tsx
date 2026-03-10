@@ -107,7 +107,7 @@ export function GuestPresenterView({
 
     const fetchMeetingData = async () => {
       setIsLoading(true);
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("board_meeting_notes")
         .select("title, agenda_items, decision_table, member_questions, ai_summary_draft, decisions_summary")
         .eq("id", meetingId)
