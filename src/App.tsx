@@ -1247,6 +1247,7 @@ const AppContent = () => {
               <Route path="/admin/leads/rules" element={<RequireAdmin><AdminLeadsRules /></RequireAdmin>} />
               <Route path="/admin/leads/settings" element={<RequireAdmin><AdminLeadsSettings /></RequireAdmin>} />
           <Route path="/partner/:slug" element={<PartnerPortalPage />} />
+              <Route path="/admin/prospectus-log" element={<RequireAdmin><ProspectusAccessLog /></RequireAdmin>} />
               <Route path="/admin/ad-campaigns" element={<AdminCampaigns />} />
             <Route path="/admin/ad-analytics" element={<AdminAdAnalytics />} />
             <Route path="/admin/onboarding" element={<OnboardingAdmin />} />
