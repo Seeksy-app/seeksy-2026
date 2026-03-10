@@ -130,7 +130,7 @@ export function OpportunityInlineEditor({ opportunity, onClose }: OpportunityInl
 
   const updateOpportunityMutation = useMutation({
     mutationFn: async (updates: Partial<SalesOpportunity>) => {
-      const { error } = await (supabase.from("sales_opportunities") as any)
+      const { error } = await (supabase as any).from("sales_opportunities")
         .update(updates)
         .eq("id", opportunity.id);
       if (error) throw error;
