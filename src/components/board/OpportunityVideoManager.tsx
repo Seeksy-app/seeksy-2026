@@ -72,7 +72,7 @@ export function OpportunityVideoManager({ opportunityId, opportunityName }: Oppo
         .delete()
         .eq("opportunity_id", opportunityId);
       if (videoIds.length > 0) {
-        await (supabase.from("sales_opportunity_videos") as any)
+        await (supabase as any).from("sales_opportunity_videos")
           .insert(videoIds.map((videoId, index) => ({ 
             opportunity_id: opportunityId, 
             video_id: videoId, 
