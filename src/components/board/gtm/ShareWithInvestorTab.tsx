@@ -47,7 +47,7 @@ export function ShareWithInvestorTab() {
 
   const revokeMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('investor_links')
         .update({ status: 'revoked' })
         .eq('id', id);

@@ -128,7 +128,7 @@ export function UploadPastMeetingModal({
           audioPath = null;
         } else {
           // Update meeting with audio path
-          await supabase
+          await (supabase as any)
             .from("board_meeting_notes")
             .update({ audio_file_url: audioPath })
             .eq("id", meeting.id);

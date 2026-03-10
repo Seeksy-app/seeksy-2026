@@ -170,7 +170,7 @@ export function OpportunityInlineEditor({ opportunity, onClose }: OpportunityInl
         .delete()
         .eq("opportunity_id", opportunity.id);
       if (proformaIds.length > 0) {
-        await (supabase.from("sales_opportunity_proformas") as any)
+        await (supabase as any).from("sales_opportunity_proformas")
           .insert(proformaIds.map((proformaId, index) => ({
             opportunity_id: opportunity.id,
             proforma_id: proformaId,

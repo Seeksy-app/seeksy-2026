@@ -62,7 +62,7 @@ export const StickyMemberNotes: React.FC<StickyMemberNotesProps> = ({
     setIsSaving(true);
     try {
       // Upsert notes to the dedicated member notes table
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("board_meeting_member_notes")
         .upsert({
           meeting_id: meetingId,

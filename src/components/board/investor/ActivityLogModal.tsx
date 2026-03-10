@@ -55,13 +55,13 @@ export function ActivityLogModal({
   const { data: emails, isLoading: emailsLoading } = useQuery({
     queryKey: ['linkEmails', linkId],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('investor_emails')
         .select('*')
         .eq('link_id', linkId)
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return data as Email[];
+      return (data as Email[]) || [];
     },
     enabled: open,
   });

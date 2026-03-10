@@ -88,7 +88,7 @@ export function OpportunityVideoManager({ opportunityId, opportunityName }: Oppo
   });
 
   const removeVideo = async (videoId: string) => {
-    await (supabase.from("sales_opportunity_videos") as any)
+    await (supabase as any).from("sales_opportunity_videos")
       .delete()
       .eq("opportunity_id", opportunityId)
       .eq("video_id", videoId);
