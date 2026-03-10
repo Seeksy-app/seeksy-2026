@@ -93,8 +93,6 @@ const Index = () => {
         {/* 2. Interactive Demo - Chat/Prompt box with clickable modules */}
         <InteractiveDemo />
         
-        {/* 3. Personas Section - Videos */}
-        <PersonasSection />
         
         {/* 4. Value Pillars - Create, Connect, Monetize */}
         <PlatformPillars />
