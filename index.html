@@ -30,17 +30,17 @@
     <meta name="author" content="Seeksy" />
     
     <style>
-      /* Match the app's actual light theme background to prevent FOUC */
+      /* Dark base to match hero image — prevents FOUC flash */
       html, body, #root {
         margin: 0;
         padding: 0;
         min-height: 100vh;
-        background-color: hsl(220, 20%, 97%);
+        background-color: #1e293b;
       }
-      /* Hide content until React + CSS are ready */
+      /* Hide content until hero image is loaded */
       #root {
         opacity: 0;
-        transition: opacity 0.1s ease-in;
+        transition: opacity 0.25s ease-in;
       }
       #root.ready {
         opacity: 1;
@@ -53,7 +53,12 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: hsl(220, 20%, 97%);
+        background-color: #1e293b;
+        transition: opacity 0.2s ease-out;
+      }
+      #initial-loader.fade-out {
+        opacity: 0;
+        pointer-events: none;
       }
       #initial-loader .dot {
         width: 8px;
