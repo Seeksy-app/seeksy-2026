@@ -619,7 +619,7 @@ export default function ProfileEdit() {
                   <div className="space-y-4">
                     <div>
                       <Label className="text-sm font-medium mb-3 block">Seeksy Apps</Label>
-                      <p className="text-xs text-muted-foreground mb-3">Only Streaming is available for My Page</p>
+                      <p className="text-xs text-muted-foreground mb-3">Only Streaming is available for your Shareable Profile Page</p>
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <div>
