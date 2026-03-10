@@ -82,7 +82,7 @@ export const ShareProformaDialog = ({ open, onOpenChange, proformaType }: ShareP
       };
 
       // Insert access record with share configuration
-      const { error: insertError } = await supabase
+      const { error: insertError } = await (supabase as any)
         .from('investor_shares')
         .insert({
           user_id: user.id,
@@ -90,7 +90,7 @@ export const ShareProformaDialog = ({ open, onOpenChange, proformaType }: ShareP
           investor_name: email.split('@')[0],
           access_code: accessCode,
           expires_at: expiresAt.toISOString(),
-          notes: `Shared by ${profileData?.full_name || 'Admin'} - ${proformaType === 'ai' ? 'AI' : 'Custom'} Proforma${adjustmentPercent !== 0 ? ' with ' + adjustmentType + ' ' + adjustmentPercent + '% (all scenarios)' : ''} - ${useRealTimeData ? 'Real-time data' : 'Projected data'}`,
+          notes: `Shared by ${(profileData as any)?.full_name || 'Admin'} - ${proformaType === 'ai' ? 'AI' : 'Custom'} Proforma${adjustmentPercent !== 0 ? ' with ' + adjustmentType + ' ' + adjustmentPercent + '% (all scenarios)' : ''} - ${useRealTimeData ? 'Real-time data' : 'Projected data'}`,
           share_config: shareConfig,
         });
 

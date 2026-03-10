@@ -97,7 +97,7 @@ export const ShareInvestorDialog = ({ open, onOpenChange }: ShareInvestorDialogP
         return;
       }
 
-      const { data: profileData } = await supabase
+      const { data: profileData } = await (supabase as any)
         .from("profiles")
         .select("full_name")
         .eq("id", user.id)

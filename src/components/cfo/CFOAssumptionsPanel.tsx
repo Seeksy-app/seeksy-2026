@@ -40,8 +40,8 @@ export function CFOAssumptionsPanel() {
   const { data: benchmarks, isLoading: benchmarksLoading } = useQuery({
     queryKey: ['rdBenchmarks'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('rd_benchmarks' as any)
+      const { data, error } = await (supabase as any)
+        .from('rd_benchmarks')
         .select('*')
         .order('metric_key');
 

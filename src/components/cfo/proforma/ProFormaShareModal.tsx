@@ -69,7 +69,7 @@ export function ProFormaShareModal({ open, onOpenChange }: ProFormaShareModalPro
       const passcode = generatePasscode();
       const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
 
-      const { data, error } = await supabase.from('proforma_share_links' as any).insert({
+      const { data, error } = await (supabase as any).from('proforma_share_links').insert({
         token,
         passcode,
         recipient_name: recipientName || null,

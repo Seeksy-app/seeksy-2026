@@ -44,11 +44,11 @@ export function ScenariosTab() {
   const { data: summaries } = useQuery({
     queryKey: ["ad-financial-model-summaries"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("ad_financial_model_summaries")
         .select("*");
       if (error) throw error;
-      return data;
+      return (data as any[]) || [];
     },
   });
 
