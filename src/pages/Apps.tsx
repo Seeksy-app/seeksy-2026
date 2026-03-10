@@ -472,7 +472,7 @@ const modules: Module[] = [
   // Identity & Profile Collection
   {
     id: "my-page",
-    name: "My Page Builder",
+    name: "Shareable Profile Page",
     description: "Build your personal landing page",
     icon: Layout,
     status: "active",
