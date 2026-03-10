@@ -80,7 +80,7 @@ export function HostMeetingTabs({
   const { data: mediaLibrary = [], isLoading: mediaLoading } = useQuery({
     queryKey: ['admin-media-library', activeTenantId, mediaSearch],
     queryFn: async () => {
-      let query = supabase
+      let query = (supabase as any)
         .from('media_files')
         .select('id, title, media_type, file_url, thumbnail_url, duration, file_size, created_at')
         .order('created_at', { ascending: false })

@@ -205,7 +205,7 @@ const BoardMeetingVideo: React.FC<BoardMeetingVideoProps> = ({
   const { data: mediaLibrary = [], isLoading: mediaLoading } = useQuery({
     queryKey: ['admin-media-library', activeTenantId, mediaSearch],
     queryFn: async () => {
-      let query = supabase
+      let query = (supabase as any)
         .from('media_files')
         .select('id, file_name, media_type, file_url, thumbnail_url, duration_seconds, file_size_bytes, created_at')
         .eq('media_type', 'video')
