@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail, ArrowRight } from "lucide-react";
@@ -12,6 +12,19 @@ interface EmailGateProps {
 export function EmailGate({ onSubmit }: EmailGateProps) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Preload the background image and signal main.tsx when ready
+  useEffect(() => {
+    const img = new Image();
+    img.src = productiveTeamBg;
+    const signal = () => window.dispatchEvent(new CustomEvent("seeksy:hero-ready"));
+    if (img.complete) {
+      signal();
+    } else {
+      img.onload = signal;
+      img.onerror = signal; // reveal even on error
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -28,11 +28,18 @@ console.log('[Boot] Rendering React app...');
 const root = document.getElementById("root")!;
 createRoot(root).render(<App />);
 
-// Wait for React to paint before revealing — prevents grey→white→grey flash
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    const loader = document.getElementById("initial-loader");
-    if (loader) loader.remove();
-    root.classList.add("ready");
-  });
-});
+// Listen for the hero image to finish loading before revealing
+function revealApp() {
+  if (root.classList.contains("ready")) return;
+  const loader = document.getElementById("initial-loader");
+  if (loader) {
+    loader.classList.add("fade-out");
+    setTimeout(() => loader.remove(), 250);
+  }
+  root.classList.add("ready");
+}
+
+window.addEventListener("seeksy:hero-ready", revealApp, { once: true });
+
+// Fallback: reveal after 3s max in case the event never fires (e.g. different route)
+setTimeout(revealApp, 3000);
