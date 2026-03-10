@@ -55,7 +55,7 @@ export function EmailGate({ onSubmit }: EmailGateProps) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="font-black text-foreground"
+          className="font-black text-white drop-shadow-sm"
           style={{
             fontSize: "clamp(32px, 5vw, 52px)",
             lineHeight: 1.08,
