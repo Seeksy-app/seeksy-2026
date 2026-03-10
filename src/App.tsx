@@ -23,6 +23,7 @@ import { DomainRedirect } from "@/components/DomainRedirect";
 import Index from "./pages/Index";
 import WorkspacePage from "./pages/Workspace";
 import LogoAsset from "./pages/LogoAsset";
+import SeeksyAppDirectory from "./pages/SeeksyAppDirectory";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import DashboardV2 from "./pages/DashboardV2";
