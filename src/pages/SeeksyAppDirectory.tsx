@@ -18,9 +18,12 @@ import platformVpa from "@/assets/platform-vpa.png";
 import platformSeeksy from "@/assets/platform-seeksy.jpg";
 import platformSeeksyTv from "@/assets/platform-seeksy-tv.jpg";
 import platformAlchify from "@/assets/platform-alchify.jpg";
+import platformAlchify2 from "@/assets/platform-alchify-2.png";
+import platformAlchify3 from "@/assets/platform-alchify-3.png";
 import platformDtv from "@/assets/platform-digitaltovoter.png";
 import platformYvb from "@/assets/platform-yourvabenefits.png";
 import platformWr360 from "@/assets/platform-workready360.png";
+import platformTl from "@/assets/platform-truckinglane.png";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
@@ -29,6 +32,7 @@ interface PlatformItem {
   name: string;
   description: string;
   image: string;
+  images?: string[];
   url?: string;
   videoUrl?: string;
   infoPopup?: {
@@ -50,7 +54,24 @@ const PLATFORMS: PlatformItem[] = [
     name: "Alchify Studio",
     description: "Professional-grade creative production suite. Edit video, mix audio, and produce content with AI-powered tools.",
     image: platformAlchify,
+    images: [platformAlchify, platformAlchify2, platformAlchify3],
     videoUrl: `${SUPABASE_URL}/storage/v1/object/public/demo-videos/Alchify.mp4`,
+  },
+  {
+    id: "truckinglane",
+    name: "Trucking Lane",
+    description: "Your AI Co-Pilot that never sleeps. The first AI assistant built exclusively for trucking — answer calls, qualify carriers, and book loads automatically.",
+    image: platformTl,
+    infoPopup: {
+      tagline: "The first AI assistant built exclusively for trucking. Answer calls, qualify carriers, and book loads — automatically. Trusted by dispatch teams nationwide.",
+      highlights: [
+        "24/7 AI Call Handling & Coverage",
+        "Real-Time FMCSA Carrier Verification",
+        "AI Intent Scoring & Lead Prioritization",
+        "50+ Language Support",
+        "Live Analytics Dashboard",
+      ],
+    },
   },
   {
     id: "digitaltovoter",
@@ -385,6 +406,28 @@ function AppCard({ module, requested, onRequest }: { module: SeeksyModule; reque
     </Card>
   );
 }
+function RotatingPlatformImage({ images, alt }: { images: string[]; alt: string }) {
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => setIndex((i) => (i + 1) % images.length), 4000);
+    return () => clearInterval(timer);
+  }, [images.length]);
+  return (
+    <AnimatePresence mode="wait">
+      <motion.img
+        key={index}
+        src={images[index]}
+        alt={alt}
+        className="w-full h-full object-cover object-top absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.6 }}
+      />
+    </AnimatePresence>
+  );
+}
+
 export default function SeeksyAppDirectory() {
   const [tab, setTab] = useState<"bundles" | "apps" | "platforms">("apps");
   const { email, sessionId, startSession } = useProspectusGate();
@@ -505,7 +548,11 @@ export default function SeeksyAppDirectory() {
                 >
                   <Card className="overflow-hidden hover:shadow-lg transition-shadow border border-border/60 h-full">
                     <div className="relative h-52 overflow-hidden">
-                      <img src={platform.image} alt={platform.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
+                      {platform.images && platform.images.length > 1 ? (
+                        <RotatingPlatformImage images={platform.images} alt={platform.name} />
+                      ) : (
+                        <img src={platform.image} alt={platform.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
+                      )}
                       {isVideo && (
                         <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                           <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center">
