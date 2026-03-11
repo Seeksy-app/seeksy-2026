@@ -18,6 +18,7 @@ import platformVpa from "@/assets/platform-vpa.png";
 import platformSeeksy from "@/assets/platform-seeksy.jpg";
 import platformSeeksyTv from "@/assets/platform-seeksy-tv.jpg";
 import platformAlchify from "@/assets/platform-alchify.jpg";
+import platformDtv from "@/assets/platform-digitaltovoter.png";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
@@ -28,6 +29,10 @@ interface PlatformItem {
   image: string;
   url?: string;
   videoUrl?: string;
+  infoPopup?: {
+    tagline: string;
+    highlights: string[];
+  };
 }
 
 const PLATFORMS: PlatformItem[] = [
@@ -44,6 +49,22 @@ const PLATFORMS: PlatformItem[] = [
     description: "Professional-grade creative production suite. Edit video, mix audio, and produce content with AI-powered tools.",
     image: platformAlchify,
     videoUrl: `${SUPABASE_URL}/storage/v1/object/public/demo-videos/Alchify.mp4`,
+  },
+  {
+    id: "digitaltovoter",
+    name: "DigitalToVoter",
+    description: "Your AI Campaign Manager That Never Sleeps. AI-powered voter outreach, event scheduling, and real-time insights for political campaigns.",
+    image: platformDtv,
+    infoPopup: {
+      tagline: "Stop juggling spreadsheets and missing opportunities. Our AI handles voter outreach, schedules events, and delivers real-time insights — so you can focus on winning.",
+      highlights: [
+        "24/7 Voter Engagement",
+        "AI-Powered Insights & Analytics",
+        "One Unified Campaign Platform",
+        "Automated Outreach & Follow-ups",
+        "Real-Time Performance Dashboard",
+      ],
+    },
   },
   {
     id: "vpa-2026",
@@ -348,6 +369,7 @@ export default function SeeksyAppDirectory() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortByCategory, setSortByCategory] = useState(false);
   const [videoPlatform, setVideoPlatform] = useState<PlatformItem | null>(null);
+  const [infoPlatform, setInfoPlatform] = useState<PlatformItem | null>(null);
 
   // Track session duration
   useUpdateSessionDuration(sessionId);
@@ -440,9 +462,13 @@ export default function SeeksyAppDirectory() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {PLATFORMS.map((platform) => {
               const isVideo = !!platform.videoUrl;
-              const Wrapper = isVideo ? 'button' : 'a';
+              const isInfo = !!platform.infoPopup;
+              const isLink = !!platform.url;
+              const Wrapper = (isVideo || isInfo) ? 'button' : 'a';
               const wrapperProps = isVideo
                 ? { onClick: () => { setVideoPlatform(platform); trackCardView(platform.name); } }
+                : isInfo
+                ? { onClick: () => { setInfoPlatform(platform); trackCardView(platform.name); } }
                 : { href: platform.url, target: "_blank", rel: "noopener noreferrer" };
 
               return (
@@ -462,12 +488,21 @@ export default function SeeksyAppDirectory() {
                           </div>
                         </div>
                       )}
+                      {isInfo && (
+                        <div className="absolute bottom-3 right-3 z-10">
+                          <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors text-muted-foreground">
+                            <PlusCircle className="h-4 w-4" />
+                          </div>
+                        </div>
+                      )}
                     </div>
                     <CardContent className="p-5 space-y-2">
                       <div className="flex items-center justify-between">
                         <h3 className="font-bold text-foreground">{platform.name}</h3>
                         {isVideo ? (
                           <Play className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        ) : isInfo ? (
+                          <PlusCircle className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                         ) : (
                           <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                         )}
@@ -595,6 +630,38 @@ export default function SeeksyAppDirectory() {
               />
             )}
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Platform Info Popup */}
+      <Dialog open={!!infoPlatform} onOpenChange={(open) => !open && setInfoPlatform(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-foreground">{infoPlatform?.name}</DialogTitle>
+            <DialogDescription className="text-muted-foreground text-sm leading-relaxed pt-1">
+              {infoPlatform?.infoPopup?.tagline}
+            </DialogDescription>
+          </DialogHeader>
+          {infoPlatform?.infoPopup?.highlights && (
+            <div className="space-y-2 py-2">
+              {infoPlatform.infoPopup.highlights.map((h, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                  <span className="text-sm text-foreground">{h}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          <Button
+            className="w-full mt-2 gap-2 rounded-full"
+            onClick={() => {
+              if (infoPlatform) handleRequestInfo(infoPlatform.name);
+              setInfoPlatform(null);
+            }}
+          >
+            <PlusCircle className="h-4 w-4" />
+            Inquire for Demo
+          </Button>
         </DialogContent>
       </Dialog>
     </div>
