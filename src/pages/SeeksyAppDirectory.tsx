@@ -20,6 +20,7 @@ import platformSeeksyTv from "@/assets/platform-seeksy-tv.jpg";
 import platformAlchify from "@/assets/platform-alchify.jpg";
 import platformDtv from "@/assets/platform-digitaltovoter.png";
 import platformYvb from "@/assets/platform-yourvabenefits.png";
+import platformWr360 from "@/assets/platform-workready360.png";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
