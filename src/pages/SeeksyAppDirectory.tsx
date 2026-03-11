@@ -411,16 +411,35 @@ export default function SeeksyAppDirectory() {
             }`}
           >
             Platforms
-          </button>
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
-          >
-            Bundles
-          </button>
         </div>
 
-        {tab === "bundles" ? (
+        {tab === "platforms" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {PLATFORMS.map((platform) => (
+              <a
+                key={platform.id}
+                href={platform.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block"
+                onMouseEnter={() => trackCardView(platform.name)}
+              >
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow border border-border/60 h-full">
+                  <div className="relative h-52 overflow-hidden">
+                    <img src={platform.image} alt={platform.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
+                  </div>
+                  <CardContent className="p-5 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-bold text-foreground">{platform.name}</h3>
+                      <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{platform.description}</p>
+                  </CardContent>
+                </Card>
+              </a>
+            ))}
+          </div>
+        ) : tab === "bundles" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {SEEKSY_COLLECTIONS.map((collection) => (
               <div key={collection.id} onMouseEnter={() => trackCardView(collection.name)}>
