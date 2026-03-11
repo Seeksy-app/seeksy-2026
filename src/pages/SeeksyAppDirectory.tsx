@@ -1,8 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Users, Eye, CheckCircle2, PlusCircle, Check, ArrowUpDown } from "lucide-react";
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { Users, Eye, CheckCircle2, PlusCircle, Check, ArrowUpDown, ExternalLink } from "lucide-react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FooterSection } from "@/components/homepage/FooterSection";
 import { SEEKSY_COLLECTIONS, type SeeksyCollection } from "@/components/modules/collectionData";
@@ -13,6 +13,25 @@ import { supabase } from "@/integrations/supabase/client";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
+import platformVpa from "@/assets/platform-vpa.png";
+
+interface PlatformItem {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  url: string;
+}
+
+const PLATFORMS: PlatformItem[] = [
+  {
+    id: "vpa-2026",
+    name: "Veteran Podcast Awards 2026",
+    description: "Celebrating the impactful voices of veteran podcasters. Live ceremony October 5th, 2026.",
+    image: platformVpa,
+    url: "https://veteran-voice-awards.lovable.app/vpa-deck",
+  },
+];
 
 // Hero images
 import heroStudio from "@/assets/app-hero-studio.jpg";
@@ -300,7 +319,7 @@ function AppCard({ module, requested, onRequest }: { module: SeeksyModule; reque
   );
 }
 export default function SeeksyAppDirectory() {
-  const [tab, setTab] = useState<"bundles" | "apps">("apps");
+  const [tab, setTab] = useState<"bundles" | "apps" | "platforms">("apps");
   const { email, sessionId, startSession } = useProspectusGate();
   const [requestedItems, setRequestedItems] = useState<Set<string>>(new Set());
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -383,9 +402,45 @@ export default function SeeksyAppDirectory() {
           >
             Bundles
           </button>
+          <button
+            onClick={() => setTab("platforms")}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+              tab === "platforms"
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            }`}
+          >
+            Platforms
+          </button>
         </div>
 
-        {tab === "bundles" ? (
+        {tab === "platforms" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {PLATFORMS.map((platform) => (
+              <a
+                key={platform.id}
+                href={platform.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block"
+                onMouseEnter={() => trackCardView(platform.name)}
+              >
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow border border-border/60 h-full">
+                  <div className="relative h-52 overflow-hidden">
+                    <img src={platform.image} alt={platform.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
+                  </div>
+                  <CardContent className="p-5 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-bold text-foreground">{platform.name}</h3>
+                      <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{platform.description}</p>
+                  </CardContent>
+                </Card>
+              </a>
+            ))}
+          </div>
+        ) : tab === "bundles" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {SEEKSY_COLLECTIONS.map((collection) => (
               <div key={collection.id} onMouseEnter={() => trackCardView(collection.name)}>
