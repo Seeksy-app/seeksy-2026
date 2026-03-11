@@ -391,7 +391,7 @@ export const SeeksyAIChatWidget = () => {
               {isLoading && (
                 <div className="flex gap-3 text-sm items-start">
                   <SparkIcon 
-                    variant="holiday"
+                    variant="default"
                     size="sm"
                     pose="typing"
                     animated
