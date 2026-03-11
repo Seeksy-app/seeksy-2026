@@ -526,7 +526,11 @@ export default function SeeksyAppDirectory() {
                 >
                   <Card className="overflow-hidden hover:shadow-lg transition-shadow border border-border/60 h-full">
                     <div className="relative h-52 overflow-hidden">
-                      <img src={platform.image} alt={platform.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
+                      {platform.images && platform.images.length > 1 ? (
+                        <RotatingPlatformImage images={platform.images} alt={platform.name} />
+                      ) : (
+                        <img src={platform.image} alt={platform.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
+                      )}
                       {isVideo && (
                         <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                           <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center">
