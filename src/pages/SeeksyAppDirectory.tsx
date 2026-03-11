@@ -445,29 +445,46 @@ export default function SeeksyAppDirectory() {
 
         {tab === "platforms" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PLATFORMS.map((platform) => (
-              <a
-                key={platform.id}
-                href={platform.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block"
-                onMouseEnter={() => trackCardView(platform.name)}
-              >
-                <Card className="overflow-hidden hover:shadow-lg transition-shadow border border-border/60 h-full">
-                  <div className="relative h-52 overflow-hidden">
-                    <img src={platform.image} alt={platform.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
-                  </div>
-                  <CardContent className="p-5 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-foreground">{platform.name}</h3>
-                      <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+            {PLATFORMS.map((platform) => {
+              const isVideo = !!platform.videoUrl;
+              const Wrapper = isVideo ? 'button' : 'a';
+              const wrapperProps = isVideo
+                ? { onClick: () => { setVideoPlatform(platform); trackCardView(platform.name); } }
+                : { href: platform.url, target: "_blank", rel: "noopener noreferrer" };
+
+              return (
+                <Wrapper
+                  key={platform.id}
+                  {...(wrapperProps as any)}
+                  className="group block text-left"
+                  onMouseEnter={() => trackCardView(platform.name)}
+                >
+                  <Card className="overflow-hidden hover:shadow-lg transition-shadow border border-border/60 h-full">
+                    <div className="relative h-52 overflow-hidden">
+                      <img src={platform.image} alt={platform.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
+                      {isVideo && (
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center">
+                            <Play className="h-6 w-6 text-primary-foreground fill-primary-foreground" />
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{platform.description}</p>
-                  </CardContent>
-                </Card>
-              </a>
-            ))}
+                    <CardContent className="p-5 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-bold text-foreground">{platform.name}</h3>
+                        {isVideo ? (
+                          <Play className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        ) : (
+                          <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{platform.description}</p>
+                    </CardContent>
+                  </Card>
+                </Wrapper>
+              );
+            })}
           </div>
         ) : tab === "bundles" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
