@@ -76,6 +76,22 @@ const PLATFORMS: PlatformItem[] = [
     videoUrl: `${SUPABASE_URL}/storage/v1/object/public/demo-videos/YourBenefits.mp4`,
   },
   {
+    id: "workready360",
+    name: "WorkReady360",
+    description: "Stop dreading Monday. AI-powered career exploration, O*NET assessments, and personalized insights to help you find work you actually love.",
+    image: platformWr360,
+    infoPopup: {
+      tagline: "You deserve a career that makes you want to get out of bed. We'll help you find purpose, reignite motivation, and build a work life powered by passion — through AI-powered insights.",
+      highlights: [
+        "Free Career Exploration Assessments",
+        "AI Insights & Resume Re-Write Tips",
+        "Curated Career Podcasts",
+        "O*NET Interest Profiler & Work Values",
+        "Matched Occupation Recommendations",
+      ],
+    },
+  },
+  {
     id: "vpa-2026",
     name: "Veteran Podcast Awards 2026",
     description: "Celebrating the impactful voices of veteran podcasters. Live ceremony October 5th, 2026.",
