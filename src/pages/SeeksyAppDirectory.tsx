@@ -20,6 +20,7 @@ import platformSeeksyTv from "@/assets/platform-seeksy-tv.jpg";
 import platformAlchify from "@/assets/platform-alchify.jpg";
 import platformDtv from "@/assets/platform-digitaltovoter.png";
 import platformYvb from "@/assets/platform-yourvabenefits.png";
+import platformWr360 from "@/assets/platform-workready360.png";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
@@ -73,6 +74,22 @@ const PLATFORMS: PlatformItem[] = [
     description: "Free calculators, AI-powered claim guidance, and connections to accredited representatives. Get the VA benefits you've earned.",
     image: platformYvb,
     videoUrl: `${SUPABASE_URL}/storage/v1/object/public/demo-videos/YourBenefits.mp4`,
+  },
+  {
+    id: "workready360",
+    name: "WorkReady360",
+    description: "Stop dreading Monday. AI-powered career exploration, O*NET assessments, and personalized insights to help you find work you actually love.",
+    image: platformWr360,
+    infoPopup: {
+      tagline: "You deserve a career that makes you want to get out of bed. We'll help you find purpose, reignite motivation, and build a work life powered by passion — through AI-powered insights.",
+      highlights: [
+        "Free Career Exploration Assessments",
+        "AI Insights & Resume Re-Write Tips",
+        "Curated Career Podcasts",
+        "O*NET Interest Profiler & Work Values",
+        "Matched Occupation Recommendations",
+      ],
+    },
   },
   {
     id: "vpa-2026",
