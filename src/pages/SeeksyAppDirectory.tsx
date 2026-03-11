@@ -462,9 +462,13 @@ export default function SeeksyAppDirectory() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {PLATFORMS.map((platform) => {
               const isVideo = !!platform.videoUrl;
-              const Wrapper = isVideo ? 'button' : 'a';
+              const isInfo = !!platform.infoPopup;
+              const isLink = !!platform.url;
+              const Wrapper = (isVideo || isInfo) ? 'button' : 'a';
               const wrapperProps = isVideo
                 ? { onClick: () => { setVideoPlatform(platform); trackCardView(platform.name); } }
+                : isInfo
+                ? { onClick: () => { setInfoPlatform(platform); trackCardView(platform.name); } }
                 : { href: platform.url, target: "_blank", rel: "noopener noreferrer" };
 
               return (
@@ -482,6 +486,34 @@ export default function SeeksyAppDirectory() {
                           <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center">
                             <Play className="h-6 w-6 text-primary-foreground fill-primary-foreground" />
                           </div>
+                        </div>
+                      )}
+                      {isInfo && (
+                        <div className="absolute bottom-3 right-3 z-10">
+                          <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors text-muted-foreground">
+                            <PlusCircle className="h-4 w-4" />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <CardContent className="p-5 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-bold text-foreground">{platform.name}</h3>
+                        {isVideo ? (
+                          <Play className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        ) : isInfo ? (
+                          <PlusCircle className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        ) : (
+                          <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{platform.description}</p>
+                    </CardContent>
+                  </Card>
+                </Wrapper>
+              );
+            })}
+          </div>
                         </div>
                       )}
                     </div>
