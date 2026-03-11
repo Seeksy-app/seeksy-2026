@@ -18,6 +18,7 @@ import platformVpa from "@/assets/platform-vpa.png";
 import platformSeeksy from "@/assets/platform-seeksy.jpg";
 import platformSeeksyTv from "@/assets/platform-seeksy-tv.jpg";
 import platformAlchify from "@/assets/platform-alchify.jpg";
+import platformDtv from "@/assets/platform-digitaltovoter.png";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
@@ -28,6 +29,10 @@ interface PlatformItem {
   image: string;
   url?: string;
   videoUrl?: string;
+  infoPopup?: {
+    tagline: string;
+    highlights: string[];
+  };
 }
 
 const PLATFORMS: PlatformItem[] = [
@@ -44,6 +49,22 @@ const PLATFORMS: PlatformItem[] = [
     description: "Professional-grade creative production suite. Edit video, mix audio, and produce content with AI-powered tools.",
     image: platformAlchify,
     videoUrl: `${SUPABASE_URL}/storage/v1/object/public/demo-videos/Alchify.mp4`,
+  },
+  {
+    id: "digitaltovoter",
+    name: "DigitalToVoter",
+    description: "Your AI Campaign Manager That Never Sleeps. AI-powered voter outreach, event scheduling, and real-time insights for political campaigns.",
+    image: platformDtv,
+    infoPopup: {
+      tagline: "Stop juggling spreadsheets and missing opportunities. Our AI handles voter outreach, schedules events, and delivers real-time insights — so you can focus on winning.",
+      highlights: [
+        "24/7 Voter Engagement",
+        "AI-Powered Insights & Analytics",
+        "One Unified Campaign Platform",
+        "Automated Outreach & Follow-ups",
+        "Real-Time Performance Dashboard",
+      ],
+    },
   },
   {
     id: "vpa-2026",
