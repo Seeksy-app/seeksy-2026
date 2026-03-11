@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { 
   Users, BarChart3, Clock, Eye, CheckCircle, 
   ChevronDown, ChevronRight, ListFilter, UserCircle,
-  ArrowLeft, TrendingUp
+  ArrowLeft, TrendingUp, MessageSquare
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
