@@ -1,0 +1,1 @@
+ALTER TABLE public.custom_packages ADD COLUMN IF NOT EXISTS icon_color text DEFAULT '#2C6BED';
