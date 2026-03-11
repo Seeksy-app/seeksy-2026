@@ -632,6 +632,38 @@ export default function SeeksyAppDirectory() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Platform Info Popup */}
+      <Dialog open={!!infoPlatform} onOpenChange={(open) => !open && setInfoPlatform(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-foreground">{infoPlatform?.name}</DialogTitle>
+            <DialogDescription className="text-muted-foreground text-sm leading-relaxed pt-1">
+              {infoPlatform?.infoPopup?.tagline}
+            </DialogDescription>
+          </DialogHeader>
+          {infoPlatform?.infoPopup?.highlights && (
+            <div className="space-y-2 py-2">
+              {infoPlatform.infoPopup.highlights.map((h, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                  <span className="text-sm text-foreground">{h}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          <Button
+            className="w-full mt-2 gap-2 rounded-full"
+            onClick={() => {
+              if (infoPlatform) handleRequestInfo(infoPlatform.name);
+              setInfoPlatform(null);
+            }}
+          >
+            <PlusCircle className="h-4 w-4" />
+            Inquire for Demo
+          </Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
