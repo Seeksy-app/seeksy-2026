@@ -65,14 +65,20 @@ export function HeroWorkspaceSection() {
 
   return (
     <section
-      className="w-full px-6"
+      className="w-full px-6 relative overflow-hidden"
       style={{
         paddingTop: "clamp(96px, 12vh, 160px)",
         paddingBottom: "80px",
         minHeight: "82vh",
-        background: "linear-gradient(180deg, hsl(var(--muted)/0.25) 0%, hsl(var(--background)) 100%)",
       }}
     >
+      {/* Background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${heroBg})` }}
+      />
+      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
       <div className="mx-auto max-w-[1280px]">
         {/* Desktop: Side by side - Decoupled columns */}
         <div
