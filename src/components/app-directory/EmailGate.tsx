@@ -70,8 +70,7 @@ export function EmailGate({ onSubmit }: EmailGateProps) {
           className="mb-8"
         >
           <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl" style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.12)" }}>
-            <img src={seeksyLogo} alt="Seeksy" className="w-10 h-10 rounded-full" />
-            <span className="text-2xl font-bold text-white tracking-tight">Seeksy</span>
+            <span className="text-3xl font-black tracking-tight bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">Seeksy</span>
           </div>
         </motion.div>
 
