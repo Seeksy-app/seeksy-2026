@@ -24,6 +24,8 @@ import platformDtv from "@/assets/platform-digitaltovoter.png";
 import platformYvb from "@/assets/platform-yourvabenefits.png";
 import platformWr360 from "@/assets/platform-workready360.png";
 import platformTl from "@/assets/platform-truckinglane.png";
+import platformGovAffairs from "@/assets/platform-governmentaffairs.jpg";
+import platformPcsing from "@/assets/platform-pcsing.jpg";
 import seeksyLogoOrange from "@/assets/seeksy-logo-orange.png";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
