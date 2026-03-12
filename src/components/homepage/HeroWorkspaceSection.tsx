@@ -149,7 +149,7 @@ export function HeroWorkspaceSection() {
               </Button>
             </div>
 
-            <p className="text-xs" style={{ color: "#6B7280", marginTop: "12px" }}>
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.5)", marginTop: "12px" }}>
               Start free with 100 credits • No credit card required
             </p>
 
