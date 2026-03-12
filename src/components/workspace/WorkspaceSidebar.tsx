@@ -417,7 +417,7 @@ export function WorkspaceSidebar() {
                 title="Go to Dashboard"
               >
                 <img 
-                  src="/seeksy-logo.png" 
+                  src="/seeksy-logo-orange.png" 
                   alt="Seeksy" 
                   className="h-10 w-10"
                 />
