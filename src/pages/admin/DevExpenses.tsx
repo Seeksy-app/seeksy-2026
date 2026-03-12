@@ -177,7 +177,7 @@ export default function DevExpenses() {
             accent
           />
           <KPICard
-            label="Dev Hours (Darnell)"
+            label="Dev Hours (Andrew)"
             value={fmt(LABOR.totalCost)}
             sub={`${LABOR.totalHours} hrs @ $${LABOR.rate}/hr`}
             icon={<Clock className="h-5 w-5" />}
