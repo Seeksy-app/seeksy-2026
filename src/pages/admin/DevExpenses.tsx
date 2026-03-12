@@ -133,7 +133,7 @@ const GRAND_TOTAL = 128126.49;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const fmt = (n: number) => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const fmt = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
 const fmtK = (n: number) => n >= 1000 ? `$${(n / 1000).toFixed(1)}k` : fmt(n);
 
 const PIE_COLORS = CATEGORIES.map(c => c.color);
