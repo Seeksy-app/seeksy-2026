@@ -116,6 +116,21 @@ const PLATFORMS: PlatformItem[] = [
     },
   },
   {
+    id: "government-affairs",
+    name: "Government Affairs",
+    description: "The Intelligence Engine for Government Affairs. A complete political intelligence platform for lobbying firms — map access, research staffers, track legislation, and execute strategy.",
+    image: platformGovAffairs,
+    videoUrl: `${SUPABASE_URL}/storage/v1/object/public/demo-videos/GovernmentAffairs.mp4`,
+    url: "https://governmentaffairs.co",
+  },
+  {
+    id: "pcsing",
+    name: "PCSing.us",
+    description: "Plan your PCS with AI. Your AI-powered military relocation assistant — housing, schools, BAH calculators, entitlements, and base-by-base guides all in one place.",
+    image: platformPcsing,
+    url: "https://pcsing.us",
+  },
+  {
     id: "vpa-2026",
     name: "Veteran Podcast Awards 2026",
     description: "Celebrating the impactful voices of veteran podcasters. Live ceremony October 5th, 2026.",
