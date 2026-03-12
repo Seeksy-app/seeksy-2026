@@ -505,15 +505,13 @@ export default function SeeksyAppDirectory() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Premium Hero Header */}
-      <div className="relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)" }}>
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+      {/* Premium Hero Header with Workplace Background */}
+      <div className="relative overflow-hidden">
+        {/* Background image */}
+        <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-black/40" />
         
-        {/* Gradient orb */}
-        <div className="absolute top-0 right-0 w-[600px] h-[400px] opacity-20 pointer-events-none" style={{ background: "radial-gradient(ellipse, hsl(var(--primary)) 0%, transparent 70%)" }} />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-10">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-10">
           {/* Top bar: logo + email */}
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-3">
@@ -530,18 +528,15 @@ export default function SeeksyAppDirectory() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-2xl"
+            className="max-w-3xl mx-auto text-center"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[2px] text-amber-300 border border-amber-400/20 mb-5" style={{ background: "rgba(251,191,36,0.08)" }}>
-              <Sparkles className="h-3 w-3" />
-              App Directory
-            </div>
-            <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight tracking-tight mb-3">
-              35+ AI-first apps.{" "}
-              <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">One ecosystem.</span>
+            <p className="text-xs font-bold uppercase tracking-[3px] text-blue-400 mb-4">Explore the Platform</p>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-4">
+              <span className="text-[#1a1f36]">Seeksy App </span>
+              <span className="text-blue-500">Directory.</span>
             </h1>
-            <p className="text-white/50 text-sm sm:text-base max-w-lg leading-relaxed">
-              Browse our complete suite of enterprise-grade applications — built for creators, teams, and businesses ready to scale.
+            <p className="text-white/70 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+              A suite of 35+ AI-first workplace applications — available for enterprise licensing, partnership, or strategic acquisition.
             </p>
           </motion.div>
 
