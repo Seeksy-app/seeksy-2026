@@ -470,6 +470,7 @@ import AdminAdAnalytics from "./pages/admin/AdminAdAnalytics";
 import OnboardingAdmin from "./pages/admin/OnboardingAdmin";
 import LeadMagnetsAdmin from "./pages/admin/LeadMagnetsAdmin";
 import AdminMilestones from "./pages/admin/AdminMilestones";
+import DevExpenses from "./pages/admin/DevExpenses";
 import ModuleOrganizer from "./pages/admin/ModuleOrganizer";
 import LeadMagnetLanding from "./pages/public/LeadMagnetLanding";
 import LeadMagnetThankYou from "./pages/public/LeadMagnetThankYou";
@@ -1254,6 +1255,7 @@ const AppContent = () => {
             <Route path="/admin/lead-magnets" element={<LeadMagnetsAdmin />} />
             <Route path="/admin/module-organizer" element={<ModuleOrganizer />} />
               <Route path="/admin/milestones" element={<AdminMilestones />} />
+              <Route path="/admin/dev-expenses" element={<DevExpenses />} />
               <Route path="/admin/permissions" element={<Permissions />} />
               <Route path="/admin/integrations" element={<AdminIntegrations />} />
               <Route path="/admin/email" element={<Navigate to="/admin/email-client" replace />} />
