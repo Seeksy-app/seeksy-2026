@@ -230,7 +230,7 @@ export function HeroWorkspaceSection() {
               style={{
                 fontSize: "40px",
                 lineHeight: 1.0,
-                color: "#0B1220",
+                color: "#FFFFFF",
               }}
             >
               Build your creator{" "}
