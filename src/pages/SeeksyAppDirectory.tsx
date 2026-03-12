@@ -500,8 +500,7 @@ export default function SeeksyAppDirectory() {
           {/* Top bar: logo + email */}
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-3">
-              <img src={seeksyLogoOrange} alt="Seeksy" className="w-9 h-9 rounded-full" />
-              <span className="text-xl font-bold text-white tracking-tight">Seeksy</span>
+              <span className="text-2xl font-black tracking-tight bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">Seeksy</span>
             </div>
             <div className="flex items-center gap-2 text-xs text-white/50">
               <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
