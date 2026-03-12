@@ -742,6 +742,16 @@ export default function SeeksyAppDirectory() {
               />
             )}
           </div>
+          {videoPlatform?.url && (
+            <div className="p-4 pt-0 flex justify-end">
+              <a href={videoPlatform.url} target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="sm" className="gap-2">
+                  <ExternalLink className="h-4 w-4" />
+                  Visit Site
+                </Button>
+              </a>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
 
