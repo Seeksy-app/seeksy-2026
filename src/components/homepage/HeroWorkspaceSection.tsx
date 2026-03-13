@@ -4,7 +4,7 @@ import { ArrowRight, Play, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { HeroWorkspaceBuilder } from "./HeroWorkspaceBuilder";
 import { motion, AnimatePresence } from "framer-motion";
-import heroBg from "@/assets/homepage/hero-workspace.png";
+// Background image removed — homepage uses white background
 
 interface PersonaContent {
   bullets: string[];
