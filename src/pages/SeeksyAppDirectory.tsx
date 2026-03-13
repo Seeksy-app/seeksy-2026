@@ -493,7 +493,7 @@ function RotatingPlatformImage({ images, alt }: { images: string[]; alt: string 
     </AnimatePresence>
   );
 }
-function SortablePlatformRow({ platform }: { platform: PlatformItem }) {
+function SortablePlatformRow({ platform, onCategoryChange }: { platform: PlatformItem; onCategoryChange?: (id: string, category: string) => void }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: platform.id });
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -511,8 +511,19 @@ function SortablePlatformRow({ platform }: { platform: PlatformItem }) {
           <img src={platform.image} alt={platform.name} className="w-12 h-12 rounded-lg object-cover shrink-0" />
           <div className="flex-1 min-w-0">
             <h4 className="font-semibold text-foreground text-sm truncate">{platform.name}</h4>
-            <p className="text-xs text-muted-foreground truncate">{platform.category}</p>
           </div>
+          {onCategoryChange && (
+            <select
+              value={platform.category}
+              onChange={(e) => onCategoryChange(platform.id, e.target.value)}
+              className="text-xs border border-border rounded-md px-2 py-1 bg-background text-foreground shrink-0"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {PLATFORM_CATEGORIES.filter(c => c.id !== "all").map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              ))}
+            </select>
+          )}
         </div>
       </Card>
     </div>
@@ -534,31 +545,32 @@ export default function SeeksyAppDirectory() {
   const { isAdmin } = useUserRoles();
   const [platformOrder, setPlatformOrder] = useState<string[]>(PLATFORMS.map(p => p.id));
   const [isReorderMode, setIsReorderMode] = useState(false);
+  const [platformCategoryOverrides, setPlatformCategoryOverrides] = useState<Record<string, string>>({});
 
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  // Load saved platform order from app_settings
+  // Load saved platform order and category overrides from app_settings
   useEffect(() => {
-    supabase
-      .from('app_settings')
-      .select('value')
-      .eq('key', 'platform_order')
-      .maybeSingle()
-      .then(({ data }) => {
-        if (data?.value && Array.isArray(data.value)) {
-          // Merge: saved order first, then any new platforms not in saved order
-          const savedOrder = data.value as string[];
-          const allIds = PLATFORMS.map(p => p.id);
-          const merged = [
-            ...savedOrder.filter(id => allIds.includes(id)),
-            ...allIds.filter(id => !savedOrder.includes(id)),
-          ];
-          setPlatformOrder(merged);
-        }
-      });
+    Promise.all([
+      supabase.from('app_settings').select('value').eq('key', 'platform_order').maybeSingle(),
+      supabase.from('app_settings').select('value').eq('key', 'platform_categories').maybeSingle(),
+    ]).then(([orderResult, catResult]) => {
+      if (orderResult.data?.value && Array.isArray(orderResult.data.value)) {
+        const savedOrder = orderResult.data.value as string[];
+        const allIds = PLATFORMS.map(p => p.id);
+        const merged = [
+          ...savedOrder.filter(id => allIds.includes(id)),
+          ...allIds.filter(id => !savedOrder.includes(id)),
+        ];
+        setPlatformOrder(merged);
+      }
+      if (catResult.data?.value && typeof catResult.data.value === 'object' && !Array.isArray(catResult.data.value)) {
+        setPlatformCategoryOverrides(catResult.data.value as Record<string, string>);
+      }
+    });
   }, []);
 
   const savePlatformOrder = useCallback(async (order: string[]) => {
@@ -567,6 +579,21 @@ export default function SeeksyAppDirectory() {
       .upsert({ key: 'platform_order', value: order as any }, { onConflict: 'key' });
     if (error) console.error('Failed to save platform order:', error);
   }, []);
+
+  const savePlatformCategories = useCallback(async (overrides: Record<string, string>) => {
+    const { error } = await supabase
+      .from('app_settings')
+      .upsert({ key: 'platform_categories', value: overrides as any }, { onConflict: 'key' });
+    if (error) console.error('Failed to save platform categories:', error);
+  }, []);
+
+  const handlePlatformCategoryChange = useCallback((platformId: string, newCategory: string) => {
+    setPlatformCategoryOverrides(prev => {
+      const updated = { ...prev, [platformId]: newCategory };
+      savePlatformCategories(updated);
+      return updated;
+    });
+  }, [savePlatformCategories]);
 
   const handlePlatformDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
@@ -638,8 +665,9 @@ export default function SeeksyAppDirectory() {
   const orderedPlatforms = useMemo(() => {
     return platformOrder
       .map(id => PLATFORMS.find(p => p.id === id))
-      .filter((p): p is PlatformItem => !!p);
-  }, [platformOrder]);
+      .filter((p): p is PlatformItem => !!p)
+      .map(p => platformCategoryOverrides[p.id] ? { ...p, category: platformCategoryOverrides[p.id] } : p);
+  }, [platformOrder, platformCategoryOverrides]);
 
   const filteredPlatforms = useMemo(() => {
     if (selectedPlatformCategory === "all") return orderedPlatforms;
@@ -735,7 +763,7 @@ export default function SeeksyAppDirectory() {
                 <SortableContext items={filteredPlatforms.map(p => p.id)} strategy={verticalListSortingStrategy}>
                   <div className="space-y-2 max-w-2xl mx-auto">
                     {filteredPlatforms.map((platform) => (
-                      <SortablePlatformRow key={platform.id} platform={platform} />
+                      <SortablePlatformRow key={platform.id} platform={platform} onCategoryChange={handlePlatformCategoryChange} />
                     ))}
                   </div>
                 </SortableContext>
