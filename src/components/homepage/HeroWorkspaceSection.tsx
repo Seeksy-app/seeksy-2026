@@ -111,7 +111,7 @@ export function HeroWorkspaceSection() {
               style={{
                 fontSize: "20px",
                 lineHeight: 1.55,
-                color: "rgba(255,255,255,0.7)",
+                color: "#4B5563",
                 maxWidth: "540px",
                 marginTop: "18px",
               }}
