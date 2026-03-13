@@ -588,8 +588,25 @@ export default function SeeksyAppDirectory() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
 
         {tab === "platforms" ? (
+          <>
+            {/* Platform Category Filters */}
+            <div className="flex flex-nowrap justify-center gap-1.5 overflow-x-auto max-w-full mb-8">
+              {PLATFORM_CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedPlatformCategory(cat.id)}
+                  className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors whitespace-nowrap ${
+                    selectedPlatformCategory === cat.id
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-muted text-muted-foreground border-border hover:bg-muted/80"
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              ))}
+            </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PLATFORMS.map((platform) => {
+            {filteredPlatforms.map((platform) => {
               const isVideo = !!platform.videoUrl;
               const isInfo = !!platform.infoPopup;
               const isLink = !!platform.url;
