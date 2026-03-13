@@ -158,6 +158,14 @@ const PLATFORMS: PlatformItem[] = [
     category: "events",
     url: "https://veteran-voice-awards.lovable.app/vpa-deck",
   },
+  {
+    id: "empowerify",
+    name: "Empowerify.io",
+    description: "AI-powered local SEO for healthcare providers. Get found on ChatGPT, Perplexity, Google, and 47+ directories — automatically.",
+    image: platformEmpowerify,
+    category: "medical",
+    url: "https://empowerify.io",
+  },
 ];
 
 // Hero images
