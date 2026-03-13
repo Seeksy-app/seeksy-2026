@@ -580,6 +580,21 @@ export default function SeeksyAppDirectory() {
     if (error) console.error('Failed to save platform order:', error);
   }, []);
 
+  const savePlatformCategories = useCallback(async (overrides: Record<string, string>) => {
+    const { error } = await supabase
+      .from('app_settings')
+      .upsert({ key: 'platform_categories', value: overrides as any }, { onConflict: 'key' });
+    if (error) console.error('Failed to save platform categories:', error);
+  }, []);
+
+  const handlePlatformCategoryChange = useCallback((platformId: string, newCategory: string) => {
+    setPlatformCategoryOverrides(prev => {
+      const updated = { ...prev, [platformId]: newCategory };
+      savePlatformCategories(updated);
+      return updated;
+    });
+  }, [savePlatformCategories]);
+
   const handlePlatformDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
