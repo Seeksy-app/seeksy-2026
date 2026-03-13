@@ -60,6 +60,7 @@ const PLATFORMS: PlatformItem[] = [
     name: "Seeksy TV",
     description: "Live streaming and on-demand video platform for creators. Broadcast, schedule, and grow your audience with built-in tools.",
     image: platformSeeksyTv,
+    category: "media",
     videoUrl: `${SUPABASE_URL}/storage/v1/object/public/demo-videos/Seeksy TV.mp4`,
   },
   {
@@ -68,6 +69,7 @@ const PLATFORMS: PlatformItem[] = [
     description: "Professional-grade creative production suite. Edit video, mix audio, and produce content with AI-powered tools.",
     image: platformAlchify,
     images: [platformAlchify, platformAlchify2, platformAlchify3],
+    category: "media",
     videoUrl: `${SUPABASE_URL}/storage/v1/object/public/demo-videos/Alchify.mp4`,
   },
   {
