@@ -610,10 +610,16 @@ export default function SeeksyAppDirectory() {
     return modules;
   }, [selectedCategory, sortByCategory]);
 
+  const orderedPlatforms = useMemo(() => {
+    return platformOrder
+      .map(id => PLATFORMS.find(p => p.id === id))
+      .filter((p): p is PlatformItem => !!p);
+  }, [platformOrder]);
+
   const filteredPlatforms = useMemo(() => {
-    if (selectedPlatformCategory === "all") return PLATFORMS;
-    return PLATFORMS.filter(p => p.category === selectedPlatformCategory);
-  }, [selectedPlatformCategory]);
+    if (selectedPlatformCategory === "all") return orderedPlatforms;
+    return orderedPlatforms.filter(p => p.category === selectedPlatformCategory);
+  }, [selectedPlatformCategory, orderedPlatforms]);
 
   // Wait for auth to settle before rendering to prevent double-mount
   if (!authReady) return null;
