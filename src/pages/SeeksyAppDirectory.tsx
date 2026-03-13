@@ -665,8 +665,9 @@ export default function SeeksyAppDirectory() {
   const orderedPlatforms = useMemo(() => {
     return platformOrder
       .map(id => PLATFORMS.find(p => p.id === id))
-      .filter((p): p is PlatformItem => !!p);
-  }, [platformOrder]);
+      .filter((p): p is PlatformItem => !!p)
+      .map(p => platformCategoryOverrides[p.id] ? { ...p, category: platformCategoryOverrides[p.id] } : p);
+  }, [platformOrder, platformCategoryOverrides]);
 
   const filteredPlatforms = useMemo(() => {
     if (selectedPlatformCategory === "all") return orderedPlatforms;
