@@ -493,8 +493,33 @@ function RotatingPlatformImage({ images, alt }: { images: string[]; alt: string 
     </AnimatePresence>
   );
 }
+function SortablePlatformRow({ platform }: { platform: PlatformItem }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: platform.id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
 
-export default function SeeksyAppDirectory() {
+  return (
+    <div ref={setNodeRef} style={style} {...attributes}>
+      <Card className="p-4 hover:border-primary/50 transition-colors">
+        <div className="flex items-center gap-3">
+          <button {...listeners} className="cursor-grab active:cursor-grabbing touch-none" aria-label="Drag to reorder">
+            <GripVertical className="h-5 w-5 text-muted-foreground" />
+          </button>
+          <img src={platform.image} alt={platform.name} className="w-12 h-12 rounded-lg object-cover shrink-0" />
+          <div className="flex-1 min-w-0">
+            <h4 className="font-semibold text-foreground text-sm truncate">{platform.name}</h4>
+            <p className="text-xs text-muted-foreground truncate">{platform.category}</p>
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+
   const [tab, setTab] = useState<"bundles" | "apps" | "platforms">("apps");
   const { email, sessionId, startSession } = useProspectusGate();
   const [authReady, setAuthReady] = useState(false);
