@@ -145,6 +145,7 @@ const PLATFORMS: PlatformItem[] = [
     name: "PCSing.us",
     description: "Plan your PCS with AI. Your AI-powered military relocation assistant — housing, schools, BAH calculators, entitlements, and base-by-base guides all in one place.",
     image: platformPcsing,
+    category: "career",
     url: "https://pcsing.us",
   },
   {
