@@ -77,6 +77,7 @@ const PLATFORMS: PlatformItem[] = [
     name: "Trucking Lane",
     description: "Your AI Co-Pilot that never sleeps. The first AI assistant built exclusively for trucking — answer calls, qualify carriers, and book loads automatically.",
     image: platformTl,
+    category: "industry",
     infoPopup: {
       tagline: "The first AI assistant built exclusively for trucking. Answer calls, qualify carriers, and book loads — automatically. Trusted by dispatch teams nationwide.",
       highlights: [
